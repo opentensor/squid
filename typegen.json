@@ -1,7 +1,6 @@
 {
   "outDir": "src/types",
-  "chainVersions": "subtensorVersions.jsonl",
-  "typesBundle": "types.json",
+  "specVersions": "http://localhost:8888/graphql",
   "events": [
     "subtensorModule.NeuronRegistered",
     "subtensorModule.WeightsSet"
