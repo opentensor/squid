@@ -1,6 +1,6 @@
 {
   "outDir": "src/types",
-  "chainVersions": "subtensorVersions.json",
+  "chainVersions": "subtensorVersions.jsonl",
   "typesBundle": "types.json",
   "events": [
     "subtensorModule.NeuronRegistered",
