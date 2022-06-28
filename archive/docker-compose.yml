@@ -20,13 +20,16 @@ services:
     environment:
       DATABASE_TYPE: postgres # set to  `cockroach` for CockroachDb
     command: [
-       "-e", "wss://kusama-rpc.polkadot.io", "--endpoint-capacity", "10", # use 10 concurrent ingesters for this endpoint
-       "-e", "wss://kusama-rpc.dwellir.com", "--endpoint-capacity", "10", # use 10 concurrent ingesters for this endpoint
+       "-e", "ws://archivelb.nakamoto.opentensor.ai:9944", "--endpoint-capacity", "10", # use 10 concurrent ingesters for this endpoint
+       "--types-bundle", "/configs/types.json", # use types.json for this endpoint
+      #  "-e", "wss://kusama-rpc.dwellir.com", "--endpoint-capacity", "10", # use 10 concurrent ingesters for this endpoint
        # add multiple endpoints to speed up the archiving.
        # adding the same endpoint will proprtionally increase the bandwidth and the indexing speed.
-       #  "--start-block", "1000000", # comment out to specify a non-zero start block
+        "--start-block", "100000", # comment out to specify a non-zero start block
        "--out", "postgres://postgres:postgres@db:5432/squid-archive"
     ]
+    volumes:
+      - ./types.json:/configs/types.json
 
   gateway:
     depends_on:
