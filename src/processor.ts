@@ -15,15 +15,53 @@ const processor = new SubstrateBatchProcessor()
         // Lookup archive by the network name in the Subsquid registry
         // archive: lookupArchive("kusama", { release: "FireSquid" })
     })
-    // .addEvent('Balances.Transfer', {
-    //     data: {event: {args: true}}
-    // } as const)
+    .addEvent('subtensorModule.NeuronRegistered', {
+        data: {event: {args: true}}
+    } as const)
 
 
 type Item = BatchProcessorItem<typeof processor>
 type Ctx = BatchContext<Store, Item>
 
-processor.addEventHandler('subtensorModule.NeuronRegistered', async (ctx) => {
+// processor.addEventHandler('subtensorModule.NeuronRegistered', async (ctx) => {
+//     const event = ctx.event;
+
+//     let coldkey = ""
+//     let hotkey = ""
+
+//     for (const args of event.extrinsic.args) {
+//         if (args.name === "coldkey") {
+//         coldkey = args.value;
+//         }
+//         if (args.name === "hotkey") {
+//         hotkey = args.value;
+//         }
+//     }
+
+        
+//     await ctx.store.save(
+//         new Registration({
+//         id: event.id,
+//         name: event.name,
+//         versionInfo: event.extrinsic.versionInfo,
+//         blockNumber: event.blockNumber,
+//         blockHash: event.extrinsic.hash,
+//         // immunityPeriod: event.extrinsic.era.immortalEra,
+//         coldkey: coldkey,
+//         hotkey: hotkey,
+//         // args: {
+//         //   id: event.id,
+//         //   name: event.extrinsic.args.name,
+//         //   type: event.extrinsic.args.type,
+//         //   value: event.extrinsic.args.value,
+//         // },
+//         })
+//     );
+// });
+
+// processor.run();
+
+processor.run(new TypeormDatabase(), async ctx => {
     const event = ctx.event;
 
     let coldkey = ""
@@ -57,50 +95,7 @@ processor.addEventHandler('subtensorModule.NeuronRegistered', async (ctx) => {
         // },
         })
     );
-});
-
-processor.run();
-
-// processor.run(new TypeormDatabase(), async ctx => {
-//     let transfers = getTransfers(ctx)
-
-//     let accountIds = new Set<string>()
-//     for (let t of transfers) {
-//         accountIds.add(t.from)
-//         accountIds.add(t.to)
-//     }
-
-//     let accounts = await ctx.store.findByIds(Account, Array.from(accountIds)).then(accounts => {
-//         return new Map(accounts.map(a => [a.id, a]))
-//     })
-
-//     let history: HistoricalBalance[] = []
-
-//     for (let t of transfers) {
-//         let from = getAccount(accounts, t.from)
-//         let to = getAccount(accounts, t.to)
-
-//         from.balance -= t.amount
-//         to.balance += t.amount
-
-//         history.push(new HistoricalBalance({
-//             id: t.id + "-from",
-//             account: from,
-//             balance: from.balance,
-//             timestamp: t.timestamp
-//         }))
-
-//         history.push(new HistoricalBalance({
-//             id: t.id + "-to",
-//             account: to,
-//             balance: to.balance,
-//             timestamp: t.timestamp
-//         }))
-//     }
-
-//     await ctx.store.save(Array.from(accounts.values()))
-//     await ctx.store.insert(history)
-// })
+})
 
 
 // interface TransferEvent {
@@ -111,6 +106,10 @@ processor.run();
 //     timestamp: bigint
 // }
 
+
+// function getRegistrations(ctx: Ctx): Registration[] {
+//     return ctx.store.find(Registration)
+// } 
 
 // function getTransfers(ctx: Ctx): TransferEvent[] {
 //     let transfers: TransferEvent[] = []
