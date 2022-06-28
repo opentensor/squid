@@ -11,3 +11,28 @@ type HistoricalBalance @entity {
   balance: BigInt!
   timestamp: BigInt!
 }
+
+type Registration @entity {
+  id: ID!
+  name: String!
+  versionInfo: String!
+  blockNumber: BigInt!
+  blockHash: String!
+  # immunityPeriod: String!
+  coldkey: String!
+  hotkey: String!
+
+}
+
+type Weights @entity {
+  id: ID!
+  name: String!
+  versionInfo: String!
+  blockNumber: BigInt!
+  blockHash: String!
+  coldkey: String!
+  weights: [BigInt!]
+  type: String!
+
+
+}

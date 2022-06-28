@@ -1,13 +1,12 @@
 {
   "outDir": "src/types",
-  "specVersions": "https://kusama.archive.subsquid.io/graphql",
+  "chainVersions": "subtensorVersions.json",
+  "typesBundle": "types.json",
   "events": [
-    "Balances.Transfer"
+    "subtensorModule.NeuronRegistered",
+    "subtensorModule.WeightsSet"
   ],
-  "calls": [ 
-    "Timestamp.set"
-  ],
-  "storage": [
-    "System.Account" 
-  ]
+  "calls": [],
+  "storage": true
 }
+ 
