@@ -4,9 +4,11 @@
   "specVersions": "http://206.81.4.77:4350/graphql",
   "typesBundle": "types.json",
   "events": [
-    "Balances.Transfer"
+    "SubtensorModule.NeuronRegistered"
   ],
   "calls": [],
-  "storage": true
+  "storage": [
+    "SubtensorModule.N"
+  ],
 }
  
