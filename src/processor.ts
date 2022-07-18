@@ -14,7 +14,7 @@ const processor = new SubstrateBatchProcessor()
         // Lookup archive by the network name in the Subsquid registry
         // archive: lookupArchive("kusama", { release: "FireSquid" })
     })
-    .addEvent('SubtensorModule.N', {
+    .addEvent('Balances.Transfer', {
         data: {event: {args: true}}
     } as const)
 
@@ -26,9 +26,21 @@ const logger = ({data}: any) => {
     console.log(data)
 }
 
+interface TransferEvent {
+    from: Uint8Array
+    to: Uint8Array
+    amount: bigint
+}
+
+
+
+function getTransferEvent(ctx: Ctx) {
+    console.log(ctx)
+}
+
+
 processor.run(new TypeormDatabase(), async ctx => {
-    const event = ctx.store
-    logger(ctx)
+    getTransferEvent(ctx)
 })
 
 
