@@ -13,6 +13,12 @@ export class Account {
   @PrimaryColumn_()
   id!: string
 
+  @Column_("text", {nullable: false})
+  coldkey!: string
+
+  @Column_("text", {nullable: false})
+  hotkey!: string
+
   @OneToMany_(() => Neuron, e => e.account)
   neurons!: Neuron[]
 }

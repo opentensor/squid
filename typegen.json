@@ -3,16 +3,14 @@
   "specVersions": "subtensorVersions.jsonl",
   "specVersions": "http://206.81.4.77:4350/graphql",
   "typesBundle": "types.json",
-  "query": [
-    "SubtensorModule.N"
-  ],
   "events": [
     "SubtensorModule.NeuronRegistered",
     "Balances.Transfer"
   ],
   "calls": [],
   "storage": [
-    "SubtensorModule.N"
+    "SubtensorModule.Neurons",
+    "SubtensorModule.Hotkeys"
   ]
 }
  

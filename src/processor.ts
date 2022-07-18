@@ -4,6 +4,8 @@ import {BatchContext, EventHandlerContext, SubstrateProcessor} from "@subsquid/s
 import {Store, TypeormDatabase} from "@subsquid/typeorm-store"
 import { Account } from "./model";
 
+import { SubtensorModuleNeuronsStorage, SubtensorModuleHotkeysStorage } from "./types/storage";
+
 
 
 const processor = new SubstrateProcessor(new TypeormDatabase());
@@ -23,13 +25,29 @@ const logger = (data: any) => {
 
 processor.addEventHandler('SubtensorModule.NeuronRegistered', processTransfers) 
 processor.addEventHandler("Balances.Transfer", processTransfers);
-processor.addEventHandler("SubtensorModule.N", processTransfers);
 
 async function processTransfers(
   ctx: EventHandlerContext<Store, { event: { args: true } }>
 ) {
     const event = ctx.event;
     ctx.log.info(`Info Log example ${JSON.stringify(event)}`);
+
+    if (event.name === "SubtensorModule.NeuronRegistered") {
+        const coldkey = event.args.call.args.coldkey;
+        const hotkey = event.args.call.args.hotkey;
+        
+        const storage_ctx = new SubtensorModuleHotkeysStorage(ctx);
+        const account = new Account();
+        account.coldkey = coldkey;
+        account.hotkey = hotkey;
+        let account_address = ss58.decode(account.coldkey).bytes;
+
+        let txn_account = await storage_ctx.getAsV107(account_address);
+
+        ctx.log.info(`Info Log example ${JSON.stringify(txn_account)}`);
+
+
+    }
 }
 
 
