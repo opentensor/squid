@@ -21,12 +21,19 @@ const logger = (data: any) => {
     console.log(data);
 }
 
-processor.addEventHandler('subtensorModule.NeuronRegistered', async (ctx) => {
-    const event = ctx.event;
-    ctx.log.info(event)
-});
+processor.addEventHandler('subtensorModule.NeuronRegistered', processTransfers) 
+processor.addEventHandler("Balances.Transfer", processTransfers);
 
-processor.run()
+async function processTransfers(
+  ctx: EventHandlerContext<Store, { event: { args: true } }>
+) {
+  ctx.log.trace("Trace Log example");
+  ctx.log.debug("Debug Log example");
+  ctx.log.info("Info Log example");
+  ctx.log.warn("Warn Log example");
+  ctx.log.error("Error Log example");
+  ctx.log.fatal("Fatal Log example");
+}
 
 
 // const processor = new SubstrateBatchProcessor()
