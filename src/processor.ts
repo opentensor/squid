@@ -22,8 +22,12 @@ const processor = new SubstrateBatchProcessor()
 type Item = BatchProcessorItem<typeof processor>
 type Ctx = BatchContext<Store, Item>
 
+const logger = ({data}: any) => {
+    console.log(data)
+}
+
 processor.run(new TypeormDatabase(), async ctx => {
-    console.log(ctx)
+    logger(ctx)
 })
 
 
