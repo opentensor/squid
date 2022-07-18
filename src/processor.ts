@@ -16,7 +16,7 @@ const processor = new SubstrateBatchProcessor()
         // archive: lookupArchive("kusama", { release: "FireSquid" })
     })
     .setBlockRange({ from: 100000 })
-    .addEvent('Balances.Transfer', {
+    .addEvent('SubtensorModule.NeuronRegistered', {
         data: {event: {args: true}}
     } as const)
 
