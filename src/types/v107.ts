@@ -2,6 +2,8 @@ import type {Result} from './support'
 
 export type AccountId = Uint8Array
 
+export type Balance = bigint
+
 export interface AccountData {
   free: Balance
   reserved: Balance
@@ -61,8 +63,6 @@ export interface Releases_V9 {
 export interface Releases_V10 {
   __kind: 'V10'
 }
-
-export type Balance = bigint
 
 export type SetId = bigint
 

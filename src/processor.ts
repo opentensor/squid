@@ -27,6 +27,7 @@ const logger = ({data}: any) => {
 }
 
 processor.run(new TypeormDatabase(), async ctx => {
+    const event = ctx.store
     logger(ctx)
 })
 

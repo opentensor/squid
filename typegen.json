@@ -3,8 +3,8 @@
   "specVersions": "subtensorVersions.jsonl",
   "specVersions": "http://206.81.4.77:4350/graphql",
   "typesBundle": "types.json",
-  "query": [
-    "SubtensorModule.N"
+  "events": [
+    "Balances.Transfer"
   ],
   "calls": [],
   "storage": true
