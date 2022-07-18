@@ -1,6 +1,5 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, OneToMany as OneToMany_} from "typeorm"
-import * as marshal from "./marshal"
-import {HistoricalBalance} from "./historicalBalance.model"
+import {Neuron} from "./neuron.model"
 
 @Entity_()
 export class Account {
@@ -14,9 +13,6 @@ export class Account {
   @PrimaryColumn_()
   id!: string
 
-  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-  balance!: bigint
-
-  @OneToMany_(() => HistoricalBalance, e => e.account)
-  historicalBalances!: HistoricalBalance[]
+  @OneToMany_(() => Neuron, e => e.account)
+  neurons!: Neuron[]
 }

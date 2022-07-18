@@ -1,38 +1,23 @@
 type Account @entity {
   "Account address"
   id: ID!
-  balance: BigInt!
-  historicalBalances: [HistoricalBalance!] @derivedFrom(field: "account")
+  neurons: [Neuron] @derivedFrom(field: "account")
 }
 
-type HistoricalBalance @entity {
+type Neuron @entity {
+  "Neuron address"
   id: ID!
   account: Account!
-  balance: BigInt!
-  timestamp: BigInt!
-}
-
-type Registration @entity {
-  id: ID!
-  name: String!
-  versionInfo: String!
-  blockNumber: BigInt!
+  uid: Int @unique
+  stake: Float!
+  rank: Float!
+  incentive: Float!
+  trust: Float!
+  consensus: Float!
+  dividends: Float!
+  lastUpdated: Int!
+  extrinsicId: String
+  createdAt: DateTime!
   blockHash: String!
-  # immunityPeriod: String!
-  coldkey: String!
-  hotkey: String!
-
-}
-
-type Weights @entity {
-  id: ID!
-  name: String!
-  versionInfo: String!
-  blockNumber: BigInt!
-  blockHash: String!
-  coldkey: String!
-  weights: [BigInt!]
-  type: String!
-
-
+  blockNum: Int!
 }

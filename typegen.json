@@ -1,9 +1,10 @@
 {
   "outDir": "src/types",
-  "specVersions": "http://localhost:8888/graphql",
+  "specVersions": "subtensorVersions.jsonl",
+  "specVersions": "http://206.81.4.77:4350/graphql",
   "typesBundle": "types.json",
-  "events": [
-    "subtensorModule.neuronRegistered"
+  "query": [
+    "SubtensorModule.N"
   ],
   "calls": [],
   "storage": true
