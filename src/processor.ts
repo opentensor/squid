@@ -1,6 +1,6 @@
 import * as ss58 from "@subsquid/ss58"
 import { lookupArchive } from "@subsquid/archive-registry"
-import {BatchContext, BatchProcessorItem, SubstrateProcessor} from "@subsquid/substrate-processor"
+import {BatchContext, EventHandlerContext, SubstrateProcessor} from "@subsquid/substrate-processor"
 import {Store, TypeormDatabase} from "@subsquid/typeorm-store"
 import { Account } from "./model";
 
