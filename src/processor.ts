@@ -23,7 +23,7 @@ const logger = (data: any) => {
 
 processor.addEventHandler('subtensorModule.NeuronRegistered', async (ctx) => {
     const event = ctx.event;
-    logger(event);
+    ctx.log.info(event)
 });
 
 processor.run()
