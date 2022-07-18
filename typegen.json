@@ -3,7 +3,7 @@
   "specVersions": "http://localhost:8888/graphql",
   "typesBundle": "types.json",
   "events": [
-    "subtensorModule.neurons",
+    "subtensorModule.neuronRegistered"
   ],
   "calls": [],
   "storage": true
