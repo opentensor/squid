@@ -14,6 +14,7 @@ const processor = new SubstrateBatchProcessor()
         // Lookup archive by the network name in the Subsquid registry
         // archive: lookupArchive("kusama", { release: "FireSquid" })
     })
+    .setBlockRange({ from: 100000 })
     .addEvent('Balances.Transfer', {
         data: {event: {args: true}}
     } as const)
