@@ -42,7 +42,7 @@ function getTransferEvent(ctx: Ctx) {
 
 
 processor.run(new TypeormDatabase(), async ctx => {
-    ctx.log.info(ctx)
+    console.log('aa')
 })
 
 
