@@ -1,49 +1,73 @@
 import * as ss58 from "@subsquid/ss58"
 import { lookupArchive } from "@subsquid/archive-registry"
-import {BatchContext, BatchProcessorItem, SubstrateBatchProcessor} from "@subsquid/substrate-processor"
+import {BatchContext, BatchProcessorItem, SubstrateProcessor} from "@subsquid/substrate-processor"
 import {Store, TypeormDatabase} from "@subsquid/typeorm-store"
 import { Account } from "./model";
 
 
-const processor = new SubstrateBatchProcessor()
-    .setBatchSize(500)
-    .setTypesBundle('types.json')
-    .setDataSource({
-        // For locally-run archives:
-        archive: 'http://206.81.4.77:8888/graphql',
-        chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
-        // Lookup archive by the network name in the Subsquid registry
-        // archive: lookupArchive("kusama", { release: "FireSquid" })
-    })
-    .setBlockRange({ from: 100000 })
-    .addEvent('SubtensorModule.NeuronRegistered', {
-        data: {event: {args: true}}
-    } as const)
 
+const processor = new SubstrateProcessor(new TypeormDatabase());
 
-type Item = BatchProcessorItem<typeof processor>
-type Ctx = BatchContext<Store, Item>
+processor.setBatchSize(500);
+processor.setDataSource({
+  archive: 'http://206.81.4.77:8888/graphql',
+  chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
+  
+});
 
-const logger = ({data}: any) => {
-    console.log(data)
+processor.setTypesBundle('types.json');
+
+const logger = (data: any) => {
+    console.log(data);
 }
 
-interface TransferEvent {
-    from: Uint8Array
-    to: Uint8Array
-    amount: bigint
-}
+processor.addEventHandler('subtensorModule.NeuronRegistered', async (ctx) => {
+    const event = ctx.event;
+    logger(event);
+});
+
+processor.run()
+
+
+// const processor = new SubstrateBatchProcessor()
+//     .setBatchSize(500)
+//     .setTypesBundle('types.json')
+//     .setDataSource({
+//         // For locally-run archives:
+//         archive: 'http://206.81.4.77:8888/graphql',
+//         chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
+//         // Lookup archive by the network name in the Subsquid registry
+//         // archive: lookupArchive("kusama", { release: "FireSquid" })
+//     })
+//     .setBlockRange({ from: 100000 })
+//     .addEvent('SubtensorModule.NeuronRegistered', {
+//         data: {event: {args: true}}
+//     } as const)
+
+
+// type Item = BatchProcessorItem<typeof processor>
+// type Ctx = BatchContext<Store, Item>
+
+// const logger = ({data}: any) => {
+//     console.log(data)
+// }
+
+// interface TransferEvent {
+//     from: Uint8Array
+//     to: Uint8Array
+//     amount: bigint
+// }
 
 
 
-function getTransferEvent(ctx: Ctx) {
-    console.log(ctx)
-}
+// function getTransferEvent(ctx: Ctx) {
+//     console.log(ctx)
+// }
 
 
-processor.run(new TypeormDatabase(), async ctx => {
-    console.log('aa')
-})
+// processor.run(new TypeormDatabase(), async ctx => {
+//     console.log('aa')
+// })
 
 
 // interface TransferEvent {
