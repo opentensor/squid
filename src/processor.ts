@@ -26,3 +26,5 @@ processor.addEventHandler('Balances.Transfer', async ctx => {
     
     logger(event);
 })
+
+processor.run();
