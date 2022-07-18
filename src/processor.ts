@@ -21,14 +21,14 @@ const logger = (data: any) => {
     console.log(data);
 }
 
-processor.addEventHandler('subtensorModule.NeuronRegistered', processTransfers) 
+processor.addEventHandler('SubtensorModule.NeuronRegistered', processTransfers) 
 processor.addEventHandler("Balances.Transfer", processTransfers);
 
 async function processTransfers(
   ctx: EventHandlerContext<Store, { event: { args: true } }>
 ) {
     const event = ctx.event;
-    ctx.log.info(`Info Log example ${event}`);
+    ctx.log.info(`Info Log example ${JSON.stringify(event)}`);
 }
 
 
