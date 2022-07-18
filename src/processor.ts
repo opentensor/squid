@@ -23,6 +23,7 @@ const logger = (data: any) => {
 
 processor.addEventHandler('SubtensorModule.NeuronRegistered', processTransfers) 
 processor.addEventHandler("Balances.Transfer", processTransfers);
+processor.addEventHandler("SubtensorModule.N", processTransfers);
 
 async function processTransfers(
   ctx: EventHandlerContext<Store, { event: { args: true } }>
