@@ -10,7 +10,7 @@ const processor = new SubstrateBatchProcessor()
     .setTypesBundle('types.json')
     .setDataSource({
         // For locally-run archives:
-        archive: 'http://206.81.4.77:4150/graphql'
+        archive: 'http://206.81.4.77:4350/graphql'
         // Lookup archive by the network name in the Subsquid registry
         // archive: lookupArchive("kusama", { release: "FireSquid" })
     })
