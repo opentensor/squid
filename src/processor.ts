@@ -27,14 +27,12 @@ processor.addEventHandler("Balances.Transfer", processTransfers);
 async function processTransfers(
   ctx: EventHandlerContext<Store, { event: { args: true } }>
 ) {
-  ctx.log.trace("Trace Log example");
-  ctx.log.debug("Debug Log example");
-  ctx.log.info("Info Log example");
-  ctx.log.warn("Warn Log example");
-  ctx.log.error("Error Log example");
-  ctx.log.fatal("Fatal Log example");
+    const event = ctx.event;
+    ctx.log.info(`Info Log example ${event}`);
 }
 
+
+processor.run();
 
 // const processor = new SubstrateBatchProcessor()
 //     .setBatchSize(500)
