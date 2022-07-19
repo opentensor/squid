@@ -9,6 +9,7 @@
   ],
   "calls": [],
   "storage": [
+    "SubtensorModule.N",
     "SubtensorModule.Neurons",
     "SubtensorModule.Hotkeys"
   ]
