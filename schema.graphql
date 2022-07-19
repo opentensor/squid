@@ -3,13 +3,12 @@ type Account @entity {
   id: ID!
   coldkey: String!
   hotkey: String!
-  neurons: Neuron @derivedFrom(field: "account")
 }
 
 type Neuron @entity {
   "Neuron address"
   id: ID!
-  account: Account!
+  account: Account @derivedFrom(field: "account")
   uid: Int @unique
   stake: BigInt!
   rank: BigInt!
