@@ -1,6 +1,13 @@
 import * as ss58 from "@subsquid/ss58"
 import { lookupArchive } from "@subsquid/archive-registry"
-import {BatchContext, BlockHandlerContext, EventHandlerContext, SubstrateProcessor} from "@subsquid/substrate-processor"
+import {
+    BatchContext,
+    BatchProcessorItem,
+    BlockHandlerContext, 
+    EventHandlerContext, 
+    SubstrateBatchProcessor, 
+    SubstrateProcessor
+} from "@subsquid/substrate-processor"
 import {Store, TypeormDatabase} from "@subsquid/typeorm-store"
 import { Account } from "./model";
 
@@ -8,32 +15,32 @@ import { Account } from "./model";
 
 
 
-const processor = new SubstrateProcessor(new TypeormDatabase());
+// const processor = new SubstrateProcessor(new TypeormDatabase());
 
-processor.setBatchSize(1);
-processor.setDataSource({
-  archive: 'http://206.81.4.77:8888/graphql',
-//   chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
+// processor.setBatchSize(500);
+// processor.setDataSource({
+//   archive: 'http://206.81.4.77:8888/graphql',
+// //   chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
   
-});
-
-processor.setTypesBundle('types.json');
-
-const logger = (data: any) => {
-    console.log(data);
-}
-
-// processor.addPreHook({range: {from: 100000}}, async ctx => {
-//     ctx.log.info("Pre-hook");
-//     ctx.log.info(ctx);
-//     processBlock(range,ctx);
-
 // });
 
+// processor.setTypesBundle('types.json');
 
-processor.addPreHook(async ctx => {
-    ctx.log.info('Pre-hook');
-})
+// const logger = (data: any) => {
+//     console.log(data);
+// }
+
+// // processor.addPreHook({range: {from: 100000}}, async ctx => {
+// //     ctx.log.info("Pre-hook");
+// //     ctx.log.info(ctx);
+// //     processBlock(range,ctx);
+
+// // });
+
+
+// processor.addPreHook(async ctx => {
+//     ctx.log.info('Pre-hook');
+// })
 // processor.addEventHandler('SubtensorModule.NeuronRegistered', processTransfers) 
 // processor.addEventHandler("Balances.Transfer", processTransfers);
 
@@ -62,22 +69,28 @@ processor.addPreHook(async ctx => {
 // }
 
 
-processor.run();
+// processor.run();
 
-// const processor = new SubstrateBatchProcessor()
-//     .setBatchSize(500)
-//     .setTypesBundle('types.json')
-//     .setDataSource({
-//         // For locally-run archives:
-//         archive: 'http://206.81.4.77:8888/graphql',
-//         chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
-//         // Lookup archive by the network name in the Subsquid registry
-//         // archive: lookupArchive("kusama", { release: "FireSquid" })
-//     })
-//     .setBlockRange({ from: 100000 })
-//     .addEvent('SubtensorModule.NeuronRegistered', {
-//         data: {event: {args: true}}
-//     } as const)
+const processor = new SubstrateBatchProcessor()
+    .setBatchSize(500)
+    .setTypesBundle('types.json')
+    .setDataSource({
+        // For locally-run archives:
+        archive: 'http://206.81.4.77:8888/graphql',
+        chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
+        // Lookup archive by the network name in the Subsquid registry
+        // archive: lookupArchive("kusama", { release: "FireSquid" })
+    })
+    .addEvent('SubtensorModule.NeuronRegistered', {
+        data: {event: {args: true}}
+    } as const);
+
+type Item = BatchProcessorItem<typeof processor>;
+type Ctx = BatchContext<Store, Item>;
+
+processor.run(new TypeormDatabase(), async (ctx) => {
+    ctx.log.info('Pre-hook');
+})
 
 
 // type Item = BatchProcessorItem<typeof processor>
