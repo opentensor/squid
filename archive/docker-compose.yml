@@ -16,7 +16,7 @@ services:
     depends_on:
       - db
     restart: on-failure
-    image: subsquid/substrate-ingest:0
+    image: subsquid/substrate-ingest:0.1.2
     environment:
       DATABASE_TYPE: postgres # set to  `cockroach` for CockroachDb
     command: [
