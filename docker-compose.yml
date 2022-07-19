@@ -10,6 +10,6 @@ services:
     ports:
       - "${DB_PORT}:5432"
       # command: ["postgres", "-c", "log_statement=all"]
-#    volumes:
-#      - ./data/db:/var/lib/postgresql/data
+   volumes:
+     - /mnt/volume_nyc1_03/squid_db:/var/lib/postgresql/data
 
