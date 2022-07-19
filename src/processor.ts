@@ -4,7 +4,7 @@ import {BatchContext, BlockHandlerContext, EventHandlerContext, SubstrateProcess
 import {Store, TypeormDatabase} from "@subsquid/typeorm-store"
 import { Account } from "./model";
 
-import { SubtensorModuleNeuronsStorage, SubtensorModuleHotkeysStorage } from "./types/storage";
+// import { SubtensorModuleNeuronsStorage, SubtensorModuleHotkeysStorage } from "./types/storage";
 
 
 
@@ -12,7 +12,7 @@ const processor = new SubstrateProcessor(new TypeormDatabase());
 
 // processor.setBatchSize(1);
 processor.setDataSource({
-  archive: 'http://206.81.4.77:4350/graphql',
+  archive: 'http://206.81.4.77:8888/graphql',
   chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
   
 });
