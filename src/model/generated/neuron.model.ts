@@ -21,36 +21,39 @@ export class Neuron {
   @Column_("int4", {nullable: true})
   uid!: number | undefined | null
 
-  @Column_("numeric", {nullable: false})
+  @Column_("int4", {nullable: false})
   stake!: number
 
-  @Column_("numeric", {nullable: false})
+  @Column_("int4", {nullable: false})
   rank!: number
 
-  @Column_("numeric", {nullable: false})
+  @Column_("int4", {nullable: false})
   incentive!: number
 
-  @Column_("numeric", {nullable: false})
+  @Column_("int4", {nullable: false})
   trust!: number
 
-  @Column_("numeric", {nullable: false})
+  @Column_("int4", {nullable: false})
   consensus!: number
 
-  @Column_("numeric", {nullable: false})
+  @Column_("int4", {nullable: false})
   dividends!: number
+
+  @Column_("int4", {nullable: false})
+  emission!: number
+
+  @Column_("int4", {nullable: false})
+  ip!: number
+
+  @Column_("int4", {nullable: false})
+  port!: number
+
+  @Column_("int4", {nullable: false})
+  version!: number
 
   @Column_("int4", {nullable: false})
   lastUpdated!: number
 
-  @Column_("text", {nullable: true})
-  extrinsicId!: string | undefined | null
-
   @Column_("timestamp with time zone", {nullable: false})
   createdAt!: Date
-
-  @Column_("text", {nullable: false})
-  blockHash!: string
-
-  @Column_("int4", {nullable: false})
-  blockNum!: number
 }

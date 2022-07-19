@@ -8,8 +8,13 @@ import {
     SubstrateBatchProcessor, 
     SubstrateProcessor
 } from "@subsquid/substrate-processor"
+
+import {
+    Account,
+    Neuron,
+} from "./model/generated"
+
 import {Store, TypeormDatabase} from "@subsquid/typeorm-store"
-import { Account } from "./model";
 
 import { 
     SubtensorModuleNeuronsStorage, 
@@ -37,18 +42,54 @@ const logger = (data: any) => {
 }
 
 
-
 processor.addPreHook(async ctx => {
     ctx.log.info('Pre-hook');
-    ctx.log.info(ctx.store);
 
     const n_ctx = new SubtensorModuleNStorage(ctx);
     const n = await n_ctx.getAsV107();
     
     for (let i = 0; i < n; i++) {
         const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
-        const hotkey = await neurons_ctx.getAsV107(i);
-        ctx.log.info(hotkey);
+        const neuron = await neurons_ctx.getAsV107(i);
+        ctx.log.info(neuron);
+
+        const uid = neuron.uid;
+        const stake = neuron.stake;
+        const rank = neuron.rank;
+        const incentive = neuron.incentive;
+        const trust = neuron.trust;
+        const consensus = neuron.consensus;
+        const dividends = neuron.dividends;
+        const emission = neuron.emission;
+        const ip = neuron.ip;
+        const port = neuron.port;
+        const version = neuron.version;
+        const coldkey = ss58.codec('polkadot').encode(neuron.coldkey);
+        const hotkey = ss58.codec('polkadot').encode(neuron.hotkey);
+        const last_updated = neuron.lastUpdate;
+        
+        await ctx.store.save(new Account({
+            id: ctx.block.id+'-'+i,
+            coldkey: coldkey,
+            hotkey: hotkey,
+            neurons: [
+                new Neuron({
+                id: ctx.block.id+'-'+i+'-neuron',
+                uid: uid,
+                stake: stake,
+                rank: rank,
+                incentive: incentive,
+                trust: trust,
+                consensus: consensus,
+                dividends: dividends,
+                emission: emission,
+                ip: ip,
+                port: port,
+                version: version,
+                lastUpdated: last_updated,
+                })
+            ]
+        }));
     }
 })
 // processor.addEventHandler('SubtensorModule.NeuronRegistered', processTransfers) 

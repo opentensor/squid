@@ -11,15 +11,17 @@ type Neuron @entity {
   id: ID!
   account: Account!
   uid: Int @unique
-  stake: Float!
-  rank: Float!
-  incentive: Float!
-  trust: Float!
-  consensus: Float!
-  dividends: Float!
+  stake: Int!
+  rank: Int!
+  incentive: Int!
+  trust: Int!
+  consensus: Int!
+  dividends: Int!
+  emission: Int!
+  ip: Int!
+  port: Int!
+  version: Int!
   lastUpdated: Int!
-  extrinsicId: String
   createdAt: DateTime!
-  blockHash: String!
-  blockNum: Int!
 }
+
