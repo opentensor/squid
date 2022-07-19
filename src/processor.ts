@@ -65,7 +65,7 @@ processor.addPreHook(async ctx => {
 // }
 
 
-// processor.run();
+processor.run();
 
 // const processor = new SubstrateBatchProcessor()
 //     .setBatchSize(500)
