@@ -67,6 +67,8 @@ processor.addPreHook(async ctx => {
         const coldkey = ss58.codec('polkadot').encode(neuron.coldkey);
         const hotkey = ss58.codec('polkadot').encode(neuron.hotkey);
         const last_updated = neuron.lastUpdate;
+        const blockNum = ctx.block.height;
+        const blockHash = ctx.block.hash;
         
         const data = new Neuron({
             id: ctx.block.id+'-'+i+'-neuron',
@@ -90,6 +92,9 @@ processor.addPreHook(async ctx => {
             coldkey: coldkey,
             hotkey: hotkey,
             neuron: [data],
+            blockNum: blockNum,
+            blockHash: blockHash,
+
         })
 
         data.account = account;
