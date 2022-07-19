@@ -89,6 +89,7 @@ processor.addPreHook(async ctx => {
             port: port,
             version: version,
             lastUpdated: last_updated,
+            createdAt: new Date(),
             })
 
         await ctx.store.save(data);
