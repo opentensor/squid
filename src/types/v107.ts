@@ -2,8 +2,6 @@ import type {Result} from './support'
 
 export type AccountId = Uint8Array
 
-export type Balance = bigint
-
 export interface NeuronMetadataOf {
   version: number
   ip: bigint
