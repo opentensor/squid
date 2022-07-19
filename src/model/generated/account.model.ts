@@ -21,4 +21,10 @@ export class Account {
 
   @OneToMany_(() => Neuron, e => e.account)
   neuron!: Neuron[]
+
+  @Column_("int4", {nullable: false})
+  blockNum!: number
+
+  @Column_("text", {nullable: false})
+  blockHash!: string
 }

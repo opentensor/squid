@@ -4,6 +4,8 @@ type Account @entity {
   coldkey: String!
   hotkey: String!
   neuron: [Neuron] @derivedFrom(field: "account")
+  blockNum: Int!
+  blockHash: String!
 }
 
 type Neuron @entity {
