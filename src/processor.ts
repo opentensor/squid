@@ -44,7 +44,12 @@ processor.addPreHook(async ctx => {
 
     const n_ctx = new SubtensorModuleNStorage(ctx);
     const n = await n_ctx.getAsV107();
-    ctx.log.info(`n: ${n}`);
+    
+    for (let i = 0; i < n; i++) {
+        const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
+        const hotkey = await neurons_ctx.getAsV107(i);
+        ctx.log.info(hotkey);
+    }
 })
 // processor.addEventHandler('SubtensorModule.NeuronRegistered', processTransfers) 
 // processor.addEventHandler("Balances.Transfer", processTransfers);
