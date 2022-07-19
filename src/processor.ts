@@ -58,6 +58,7 @@ processor.addPreHook(async ctx => {
     const n_ctx = new SubtensorModuleNStorage(ctx);
     const n = await n_ctx.getAsV107();
     
+    
     for (let i = 0; i < n; i++) {
         const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
         const neuron = await neurons_ctx.getAsV107(i);
@@ -81,7 +82,7 @@ processor.addPreHook(async ctx => {
         const blockHash = ctx.block.hash;
         
         const data = new Neuron({
-            id: makeid(12),
+            id: makeid(12).toLowerCase(),
             uid: uid,
             stake: stake,
             rank: rank,
@@ -98,7 +99,7 @@ processor.addPreHook(async ctx => {
             })
 
         const account = new Account({
-            id: makeid(12),
+            id: makeid(12).toLowerCase(),
             coldkey: coldkey,
             hotkey: hotkey,
             neuron: [data],
