@@ -57,7 +57,7 @@ async function processTransfers(
         account.hotkey = hotkey;
         let account_address = ss58.decode(account.coldkey).bytes;
 
-        let txn_account = await storage_ctx.getAsV107(account_address);
+        let txn_account = await storage_ctx.getAsV109(account_address);
 
         ctx.log.info(`Info Log example ${JSON.stringify(txn_account)}`);
 
