@@ -11,7 +11,7 @@ type Account @entity {
 type Neuron @entity {
   "Neuron address"
   id: ID!
-  account: Account
+  account: Account!
   uid: Int @unique
   stake: BigInt!
   rank: BigInt!
