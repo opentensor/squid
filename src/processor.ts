@@ -91,7 +91,24 @@ processor.addPreHook(async ctx => {
             ]
         })
 
-        await ctx.store.save(account);
+        const data = new Neuron({
+            id: ctx.block.id+'-'+i+'-neuron',
+            account: account,
+            uid: uid,
+            stake: stake,
+            rank: rank,
+            incentive: incentive,
+            trust: trust,
+            consensus: consensus,
+            dividends: dividends,
+            emission: emission,
+            ip: ip,
+            port: port,
+            version: version,
+            lastUpdated: last_updated,
+            })
+
+        await ctx.store.save(data);
         ctx.log.info('saved account: '+uid);
     }
 })

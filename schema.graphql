@@ -3,7 +3,6 @@ type Account @entity {
   id: ID!
   coldkey: String!
   hotkey: String!
-  neurons: [Neuron] @derivedFrom(field: "account")
 }
 
 type Neuron @entity {
