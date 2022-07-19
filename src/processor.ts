@@ -17,7 +17,7 @@ import { Account } from "./model";
 
 const processor = new SubstrateProcessor(new TypeormDatabase());
 
-processor.setBatchSize(500);
+processor.setBatchSize(1);
 processor.setDataSource({
   archive: 'http://206.81.4.77:8888/graphql',
 //   chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
@@ -25,7 +25,7 @@ processor.setDataSource({
 });
 
 processor.setTypesBundle('types.json');
-processor.setBlockRange({ from: 700000 })
+processor.setBlockRange({ from: 400000 })
 
 
 const logger = (data: any) => {
@@ -36,6 +36,7 @@ const logger = (data: any) => {
 
 processor.addPreHook(async ctx => {
     ctx.log.info('Pre-hook');
+    ctx.log.info(ctx);
 })
 // processor.addEventHandler('SubtensorModule.NeuronRegistered', processTransfers) 
 // processor.addEventHandler("Balances.Transfer", processTransfers);
