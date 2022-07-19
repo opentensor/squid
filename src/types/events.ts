@@ -1,6 +1,6 @@
 import assert from 'assert'
 import {Chain, ChainContext, EventContext, Event, Result} from './support'
-import * as v107 from './v107'
+import * as v109 from './v109'
 
 export class BalancesTransferEvent {
   private readonly _chain: Chain
@@ -18,15 +18,15 @@ export class BalancesTransferEvent {
   /**
    *  Transfer succeeded. \[from, to, value\]
    */
-  get isV107(): boolean {
+  get isV109(): boolean {
     return this._chain.getEventHash('Balances.Transfer') === '01bd9c526b0f715f947efaae82673221462be99f3a3f192f5f47bd9956dfec38'
   }
 
   /**
    *  Transfer succeeded. \[from, to, value\]
    */
-  get asV107(): [v107.AccountId, v107.AccountId, v107.Balance] {
-    assert(this.isV107)
+  get asV109(): [v109.AccountId, v109.AccountId, v109.Balance] {
+    assert(this.isV109)
     return this._chain.decodeEvent(this.event)
   }
 }
@@ -48,7 +48,7 @@ export class SubtensorModuleNeuronRegisteredEvent {
    *  --- Event created when a new neuron account has been registered to 
    *  the chain.
    */
-  get isV107(): boolean {
+  get isV109(): boolean {
     return this._chain.getEventHash('SubtensorModule.NeuronRegistered') === '0a0f30b1ade5af5fade6413c605719d59be71340cf4884f65ee9858eb1c38f6c'
   }
 
@@ -56,8 +56,8 @@ export class SubtensorModuleNeuronRegisteredEvent {
    *  --- Event created when a new neuron account has been registered to 
    *  the chain.
    */
-  get asV107(): number {
-    assert(this.isV107)
+  get asV109(): number {
+    assert(this.isV109)
     return this._chain.decodeEvent(this.event)
   }
 }
