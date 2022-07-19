@@ -41,6 +41,16 @@ const logger = (data: any) => {
     console.log(data);
 }
 
+function makeid(length: number) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * 
+ charactersLength));
+   }
+   return result;
+}
 
 processor.addPreHook(async ctx => {
     ctx.log.info('Pre-hook');
@@ -71,7 +81,7 @@ processor.addPreHook(async ctx => {
         const blockHash = ctx.block.hash;
         
         const data = new Neuron({
-            id: ctx.block.height+ctx.block.id+'-'+i+'-neuron',
+            id: makeid(12),
             uid: uid,
             stake: stake,
             rank: rank,
@@ -88,7 +98,7 @@ processor.addPreHook(async ctx => {
             })
 
         const account = new Account({
-            id: ctx.block.height+ctx.block.id+'-'+i,
+            id: makeid(12),
             coldkey: coldkey,
             hotkey: hotkey,
             neuron: [data],
