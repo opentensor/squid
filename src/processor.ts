@@ -51,7 +51,7 @@ processor.addPreHook(async ctx => {
     for (let i = 0; i < n; i++) {
         const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
         const neuron = await neurons_ctx.getAsV107(i);
-        ctx.log.info(neuron);
+        // ctx.log.info(neuron);
 
         const uid = neuron.uid;
         const stake = neuron.stake;
@@ -68,7 +68,7 @@ processor.addPreHook(async ctx => {
         const hotkey = ss58.codec('polkadot').encode(neuron.hotkey);
         const last_updated = neuron.lastUpdate;
         
-        await ctx.store.save(new Account({
+        const account = new Account({
             id: ctx.block.id+'-'+i,
             coldkey: coldkey,
             hotkey: hotkey,
@@ -89,7 +89,10 @@ processor.addPreHook(async ctx => {
                 lastUpdated: last_updated,
                 })
             ]
-        }));
+        })
+
+        await ctx.store.save(account);
+        ctx.log.info('saved account: '+uid);
     }
 })
 // processor.addEventHandler('SubtensorModule.NeuronRegistered', processTransfers) 
