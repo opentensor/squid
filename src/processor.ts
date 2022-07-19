@@ -81,6 +81,7 @@ const processor = new SubstrateBatchProcessor()
         // Lookup archive by the network name in the Subsquid registry
         // archive: lookupArchive("kusama", { release: "FireSquid" })
     })
+    .setBlockRange({ from: 100000 })
     .addEvent('SubtensorModule.NeuronRegistered', {
         data: {event: {args: true}}
     } as const);
