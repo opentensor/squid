@@ -1,6 +1,6 @@
 import * as ss58 from "@subsquid/ss58"
 import { lookupArchive } from "@subsquid/archive-registry"
-import {BatchContext, EventHandlerContext, SubstrateProcessor} from "@subsquid/substrate-processor"
+import {BatchContext, BlockHandlerContext, EventHandlerContext, SubstrateProcessor} from "@subsquid/substrate-processor"
 import {Store, TypeormDatabase} from "@subsquid/typeorm-store"
 import { Account } from "./model";
 
@@ -23,11 +23,21 @@ const logger = (data: any) => {
     console.log(data);
 }
 
-processor.addPreHook(async ctx => {
-    ctx.log.info("Pre-hook");
-    ctx.log.info(ctx);
+// processor.addPreHook({range: {from: 100000}}, async ctx => {
+//     ctx.log.info("Pre-hook");
+//     ctx.log.info(ctx);
+//     processBlock(range,ctx);
 
-});
+// });
+
+
+processor.addPreHook(async ctx => {
+        ctx.items.forEach(item => {
+            if (item.kind == 'event') {
+                console.log(item.event.name)
+            }
+        })
+    })
 // processor.addEventHandler('SubtensorModule.NeuronRegistered', processTransfers) 
 // processor.addEventHandler("Balances.Transfer", processTransfers);
 
