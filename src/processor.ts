@@ -32,11 +32,7 @@ const logger = (data: any) => {
 
 
 processor.addPreHook(async ctx => {
-    ctx.items.forEach(item => {
-        if (item.kind == 'event') {
-            console.log(item.event.name)
-        }
-    })
+    ctx.log.info('Pre-hook');
 })
 // processor.addEventHandler('SubtensorModule.NeuronRegistered', processTransfers) 
 // processor.addEventHandler("Balances.Transfer", processTransfers);
