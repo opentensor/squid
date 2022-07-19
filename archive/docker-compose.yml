@@ -5,7 +5,7 @@ services:
     image: postgres:12
     restart: always
     volumes:
-      - /mnt/volume_nyc1_03/var/lib/postgresql/data
+      - /mnt/volume_nyc1_03/db:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
