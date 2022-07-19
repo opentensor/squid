@@ -20,5 +20,5 @@ export class Account {
   hotkey!: string
 
   @OneToMany_(() => Neuron, e => e.account)
-  neurons!: Neuron[]
+  neuron!: Neuron[]
 }

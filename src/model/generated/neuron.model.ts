@@ -15,8 +15,8 @@ export class Neuron {
   id!: string
 
   @Index_()
-  @ManyToOne_(() => Account, {nullable: false})
-  account!: Account
+  @ManyToOne_(() => Account, {nullable: true})
+  account!: Account | undefined | null
 
   @Index_({unique: true})
   @Column_("int4", {nullable: true})
