@@ -68,15 +68,8 @@ processor.addPreHook(async ctx => {
         const hotkey = ss58.codec('polkadot').encode(neuron.hotkey);
         const last_updated = neuron.lastUpdate;
         
-        const account = new Account({
-            id: ctx.block.id+'-'+i,
-            coldkey: coldkey,
-            hotkey: hotkey,
-        })
-
         const data = new Neuron({
             id: ctx.block.id+'-'+i+'-neuron',
-            account: account,
             uid: uid,
             stake: stake,
             rank: rank,
@@ -92,7 +85,15 @@ processor.addPreHook(async ctx => {
             createdAt: new Date(),
             })
 
-        await ctx.store.save(data);
+        const account = new Account({
+            id: ctx.block.id+'-'+i,
+            coldkey: coldkey,
+            hotkey: hotkey,
+            neuron: [data],
+        })
+
+
+        await ctx.store.save(account);
         ctx.log.info('saved account: '+uid);
     }
 })
