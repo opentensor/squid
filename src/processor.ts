@@ -113,7 +113,7 @@ processor.addPreHook(async ctx => {
 
         await ctx.store.save(account);
         await ctx.store.save(data);
-        ctx.log.info('saved account: '+uid);
+        // ctx.log.info('saved account: '+uid);
     }
 })
 // processor.addEventHandler('SubtensorModule.NeuronRegistered', processTransfers) 
