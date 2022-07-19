@@ -71,7 +71,7 @@ processor.addPreHook(async ctx => {
         const blockHash = ctx.block.hash;
         
         const data = new Neuron({
-            id: ctx.block.height+'-'+i+'-neuron',
+            id: ctx.block.height+ctx.block.id+'-'+i+'-neuron',
             uid: uid,
             stake: stake,
             rank: rank,
