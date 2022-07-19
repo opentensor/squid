@@ -11,17 +11,17 @@ type Neuron @entity {
   id: ID!
   account: Account!
   uid: Int @unique
-  stake: Int!
-  rank: Int!
-  incentive: Int!
-  trust: Int!
-  consensus: Int!
-  dividends: Int!
-  emission: Int!
-  ip: Int!
+  stake: BigInt!
+  rank: BigInt!
+  incentive: BigInt!
+  trust: BigInt!
+  consensus: BigInt!
+  dividends: BigInt!
+  emission: BigInt!
+  ip: BigInt!
   port: Int!
   version: Int!
-  lastUpdated: Int!
+  lastUpdated: BigInt!
   createdAt: DateTime!
 }
 
