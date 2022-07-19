@@ -11,7 +11,7 @@ import {
 import {Store, TypeormDatabase} from "@subsquid/typeorm-store"
 import { Account } from "./model";
 
-// import { SubtensorModuleNeuronsStorage, SubtensorModuleHotkeysStorage } from "./types/storage";
+import { SubtensorModuleNeuronsStorage, SubtensorModuleHotkeysStorage } from "./types/storage";
 
 
 
@@ -25,7 +25,7 @@ processor.setDataSource({
 });
 
 processor.setTypesBundle('types.json');
-processor.setBlockRange({ from: 400000 })
+processor.setBlockRange({ from: 300000 })
 
 
 const logger = (data: any) => {
@@ -36,7 +36,7 @@ const logger = (data: any) => {
 
 processor.addPreHook(async ctx => {
     ctx.log.info('Pre-hook');
-    ctx.log.info(ctx.block);
+    ctx.log.info(ctx.store);
 })
 // processor.addEventHandler('SubtensorModule.NeuronRegistered', processTransfers) 
 // processor.addEventHandler("Balances.Transfer", processTransfers);
