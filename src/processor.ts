@@ -31,39 +31,39 @@ const logger = (data: any) => {
 // });
 
 
-processor.addPreHook(async ctx => {
-        ctx.items.forEach(item => {
-            if (item.kind == 'event') {
-                console.log(item.event.name)
-            }
-        })
-    })
-// processor.addEventHandler('SubtensorModule.NeuronRegistered', processTransfers) 
-// processor.addEventHandler("Balances.Transfer", processTransfers);
+// processor.addPreHook(async ctx => {
+//         ctx.items.forEach(item => {
+//             if (item.kind == 'event') {
+//                 console.log(item.event.name)
+//             }
+//         })
+//     })
+processor.addEventHandler('SubtensorModule.NeuronRegistered', processTransfers) 
+processor.addEventHandler("Balances.Transfer", processTransfers);
 
-// async function processTransfers(
-//   ctx: EventHandlerContext<Store, { event: { args: true } }>
-// ) {
-//     const event = ctx.event;
-//     ctx.log.info(`Info Log example ${JSON.stringify(event)}`);
+async function processTransfers(
+  ctx: EventHandlerContext<Store, { event: { args: true } }>
+) {
+    const event = ctx.event;
+    ctx.log.info(`Info Log example ${JSON.stringify(event)}`);
 
-//     if (event.name === "SubtensorModule.NeuronRegistered") {
-//         const coldkey = event.args.call.args.coldkey;
-//         const hotkey = event.args.call.args.hotkey;
+    if (event.name === "SubtensorModule.NeuronRegistered") {
+        const coldkey = event.args.call.args.coldkey;
+        const hotkey = event.args.call.args.hotkey;
         
-//         const storage_ctx = new SubtensorModuleHotkeysStorage(ctx);
-//         const account = new Account();
-//         account.coldkey = coldkey;
-//         account.hotkey = hotkey;
-//         let account_address = ss58.decode(account.coldkey).bytes;
+        const storage_ctx = new SubtensorModuleHotkeysStorage(ctx);
+        const account = new Account();
+        account.coldkey = coldkey;
+        account.hotkey = hotkey;
+        let account_address = ss58.decode(account.coldkey).bytes;
 
-//         let txn_account = await storage_ctx.getAsV107(account_address);
+        let txn_account = await storage_ctx.getAsV107(account_address);
 
-//         ctx.log.info(`Info Log example ${JSON.stringify(txn_account)}`);
+        ctx.log.info(`Info Log example ${JSON.stringify(txn_account)}`);
 
 
-//     }
-// }
+    }
+}
 
 
 processor.run();
