@@ -72,23 +72,6 @@ processor.addPreHook(async ctx => {
             id: ctx.block.id+'-'+i,
             coldkey: coldkey,
             hotkey: hotkey,
-            neurons: [
-                new Neuron({
-                id: ctx.block.id+'-'+i+'-neuron',
-                uid: uid,
-                stake: stake,
-                rank: rank,
-                incentive: incentive,
-                trust: trust,
-                consensus: consensus,
-                dividends: dividends,
-                emission: emission,
-                ip: ip,
-                port: port,
-                version: version,
-                lastUpdated: last_updated,
-                })
-            ]
         })
 
         const data = new Neuron({
