@@ -24,7 +24,7 @@ const processor = new SubstrateProcessor(new TypeormDatabase());
 processor.setBatchSize(1);
 processor.setDataSource({
   archive: 'http://206.81.4.77:8888/graphql',
-//   chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
+  chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
   
 });
 
