@@ -11,7 +11,8 @@
   "storage": [
     "SubtensorModule.N",
     "SubtensorModule.Neurons",
-    "SubtensorModule.Hotkeys"
+    "SubtensorModule.Hotkeys",
+    "System.Account"
   ]
 }
  
