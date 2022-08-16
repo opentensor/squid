@@ -1,7 +1,6 @@
 {
   "outDir": "src/types",
-  "specVersions": "subtensorVersions.jsonl",
-  "specVersions": "http://206.81.4.77:8888/graphql",
+  "specVersions": "http://morpheus.opentensor.ai:8889/graphql",
   "typesBundle": "types.json",
   "events": [
     "SubtensorModule.NeuronRegistered",

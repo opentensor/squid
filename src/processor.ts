@@ -28,7 +28,7 @@ const processor = new SubstrateProcessor(new TypeormDatabase());
 
 processor.setBatchSize(500);
 processor.setDataSource({
-  archive: 'http://206.81.4.77:8889/graphql',
+  archive: 'http://morpheus.opentensor.ai:8889/graphql',
   chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
   
 });
@@ -56,12 +56,12 @@ processor.addPreHook(async ctx => {
     ctx.log.info('Pre-hook');
 
     const n_ctx = new SubtensorModuleNStorage(ctx);
-    const n = await n_ctx.getAsV108();
+    const n = await n_ctx.getAsV107();
     
     
     for (let i = 0; i < n; i++) {
         const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
-        const neuron = await neurons_ctx.getAsV108(i);
+        const neuron = await neurons_ctx.getAsV107(i);
         // ctx.log.info(neuron);
 
         const uid = neuron.uid;

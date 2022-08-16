@@ -15,12 +15,11 @@ export class Neuron {
   id!: string
 
   @Index_()
-  @ManyToOne_(() => Account, {nullable: true})
-  account!: Account | undefined | null
+  @ManyToOne_(() => Account, {nullable: false})
+  account!: Account
 
-  @Index_({unique: true})
-  @Column_("int4", {nullable: true})
-  uid!: number | undefined | null
+  @Column_("int4", {nullable: false})
+  uid!: number
 
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   stake!: bigint
