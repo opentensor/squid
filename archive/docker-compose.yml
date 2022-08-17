@@ -50,7 +50,7 @@ services:
   # the on-chain data and rich filtering capabilities. 
   # It proved to be a indespensable tool for debugging, development and exploration
   explorer:
-    image: subsquid/substrate-explorer:firequid
+    image: subsquid/substrate-explorer:firesquid
     environment:
       DB_TYPE: postgres # set to `cockroach` for Cockroach DB
       DB_HOST: db
