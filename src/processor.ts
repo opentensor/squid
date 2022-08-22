@@ -34,7 +34,7 @@ processor.setDataSource({
 });
 
 processor.setTypesBundle('types.json');
-processor.setBlockRange({ from: 500000 })
+processor.setBlockRange({ from: 200000 })
 
 
 const logger = (data: any) => {
@@ -62,7 +62,7 @@ processor.addPreHook(async ctx => {
     for (let i = 0; i < n; i++) {
         const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
         const neuron = await neurons_ctx.getAsV107(i);
-        // ctx.log.info(neuron);
+        ctx.log.info(neuron);
 
         const uid = neuron.uid;
         const stake = neuron.stake;
