@@ -54,21 +54,42 @@ function makeid(length: number) {
 }
 
 
+function sliceIntoChunks({arr, chunkSize}: SliceProps) {
+    const res = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+        const chunk = arr.slice(i, i + chunkSize);
+        res.push(chunk);
+    }
+    return res;
+}
+
+interface SliceProps {
+    arr: number[],
+    chunkSize: number
+}
+
 processor.addPreHook(async (ctx) => {
     const n_ctx = new SubtensorModuleNStorage(ctx);
     const n = await n_ctx.getAsV107();
 
-    // create an array with a range of 0 to n
+    // create an array with a range of 0 to n, then split into chunks of size 16
+
+    ctx.log.info(`n: ${n}`);
 
     const ns = Array.from(Array(n).keys());
+    const uids = sliceIntoChunks({arr: ns, chunkSize: 16});
+
 
 
     const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
     const system_ctx = new SystemAccountStorage(ctx);
 
-    const neurons = await neurons_ctx.getManyAsV107(ns);
+    for (let i = 0; i < uids.length; i++) {
 
-    ctx.log.info(neurons)
+        const neurons = await neurons_ctx.getManyAsV107(uids[i]);
+
+        ctx.log.info(neurons)
+    }
 
 })
 
