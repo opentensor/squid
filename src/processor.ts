@@ -35,7 +35,7 @@ processor.setDataSource({
 });
 
 processor.setTypesBundle('types.json');
-processor.setBlockRange({ from: 290377 })
+processor.setBlockRange({ from: 300000 })
 
 
 const logger = (data: any) => {
