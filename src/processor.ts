@@ -53,75 +53,94 @@ function makeid(length: number) {
    return result;
 }
 
-processor.addPreHook(async ctx => {
-    ctx.log.info('Pre-hook');
 
+processor.addPreHook(async (ctx) => {
     const n_ctx = new SubtensorModuleNStorage(ctx);
     const n = await n_ctx.getAsV107();
-    
-    
-    for (let i = 0; i < n; i++) {
-        const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
-        const system_ctx = new SystemAccountStorage(ctx);
-        const neuron = await neurons_ctx.getAsV107(i);
-        ctx.log.info(neuron);
 
-        const uid = neuron.uid;
-        const stake = neuron.stake;
-        const rank = neuron.rank;
-        const incentive = neuron.incentive;
-        const trust = neuron.trust;
-        const consensus = neuron.consensus;
-        const dividends = neuron.dividends;
-        const emission = neuron.emission;
-        const ip = neuron.ip;
-        const port = neuron.port;
-        const version = neuron.version;
-        const coldkey = ss58.codec(42).encode(neuron.coldkey);
-        const hotkey = ss58.codec(42).encode(neuron.hotkey);
-        const last_updated = neuron.lastUpdate;
-        const blockNum = ctx.block.height;
-        const blockHash = ctx.block.hash;
-        
-        const data = new Neuron({
-            id: makeid(12).toLowerCase(),
-            uid: uid,
-            stake: stake,
-            rank: rank,
-            incentive: incentive,
-            trust: trust,
-            consensus: consensus,
-            dividends: dividends,
-            emission: emission,
-            ip: ip,
-            port: port,
-            version: version,
-            lastUpdated: last_updated,
-            createdAt: new Date(),
-            })
+    // create an array with a range of 0 to n
+
+    const ns = Array.from(Array(n).keys());
 
 
-        const balance = await system_ctx.getAsV107(neuron.coldkey);
-        const user_balance = balance.data.free;
-        const account = new Account({
-            id: makeid(12).toLowerCase(),
-            coldkey: coldkey,
-            hotkey: hotkey,
-            balance: user_balance,
-            neuron: [data],
-            blockNum: blockNum,
-            blockHash: blockHash,
+    const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
+    const system_ctx = new SystemAccountStorage(ctx);
 
-        })
+    const neurons = await neurons_ctx.getManyAsV107(ns);
 
-        data.account = account;
+    ctx.log.info(neurons)
 
-
-        await ctx.store.save(account);
-        await ctx.store.save(data);
-        // ctx.log.info('saved account: '+uid);
-    }
 })
+
+// processor.addPreHook(async ctx => {
+//     ctx.log.info('Pre-hook');
+
+//     const n_ctx = new SubtensorModuleNStorage(ctx);
+//     const n = await n_ctx.getAsV107();
+    
+    
+//     for (let i = 0; i < n; i++) {
+//         const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
+//         const system_ctx = new SystemAccountStorage(ctx);
+//         const neuron = await neurons_ctx.getAsV107(i);
+//         // ctx.log.info(neuron);
+
+//         const uid = neuron.uid;
+//         const stake = neuron.stake;
+//         const rank = neuron.rank;
+//         const incentive = neuron.incentive;
+//         const trust = neuron.trust;
+//         const consensus = neuron.consensus;
+//         const dividends = neuron.dividends;
+//         const emission = neuron.emission;
+//         const ip = neuron.ip;
+//         const port = neuron.port;
+//         const version = neuron.version;
+//         const coldkey = ss58.codec(42).encode(neuron.coldkey);
+//         const hotkey = ss58.codec(42).encode(neuron.hotkey);
+//         const last_updated = neuron.lastUpdate;
+//         const blockNum = ctx.block.height;
+//         const blockHash = ctx.block.hash;
+        
+//         const data = new Neuron({
+//             id: makeid(12).toLowerCase(),
+//             uid: uid,
+//             stake: stake,
+//             rank: rank,
+//             incentive: incentive,
+//             trust: trust,
+//             consensus: consensus,
+//             dividends: dividends,
+//             emission: emission,
+//             ip: ip,
+//             port: port,
+//             version: version,
+//             lastUpdated: last_updated,
+//             createdAt: new Date(),
+//             })
+
+
+//         const balance = await system_ctx.getAsV107(neuron.coldkey);
+//         const user_balance = balance.data.free;
+//         const account = new Account({
+//             id: makeid(12).toLowerCase(),
+//             coldkey: coldkey,
+//             hotkey: hotkey,
+//             balance: user_balance,
+//             neuron: [data],
+//             blockNum: blockNum,
+//             blockHash: blockHash,
+
+//         })
+
+//         data.account = account;
+
+
+//         await ctx.store.save(account);
+//         await ctx.store.save(data);
+//         // ctx.log.info('saved account: '+uid);
+//     }
+// })
 // processor.addEventHandler('SubtensorModule.NeuronRegistered', processTransfers) 
 // processor.addEventHandler("Balances.Transfer", processTransfers);
 
