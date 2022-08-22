@@ -3,7 +3,6 @@ type Account @entity {
   id: ID!
   coldkey: String!
   hotkey: String!
-  # balance: BigInt!
   neuron: [Neuron] @derivedFrom(field: "account")
   blockNum: Int!
   blockHash: String!
