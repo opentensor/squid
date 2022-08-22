@@ -25,6 +25,6 @@
         }
     },
     "signedExtensions": {
-        "SubtensorSignedExtension": "Extension Type"
+        "SubtensorSignedExtension": "Null"
       }
 }
