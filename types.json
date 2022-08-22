@@ -23,5 +23,8 @@
             "bonds": "Vec<(u32, u64)>",
             "weights": "Vec<(u32, u32)>"
         }
-    }
+    },
+    "signedExtensions": {
+        "SubtensorSignedExtension": "Null"
+      }
 }
