@@ -88,6 +88,67 @@ processor.addPreHook(async (ctx) => {
 
         const neurons = await neurons_ctx.getManyAsV107(uids[i]);
 
+        for (let j = 0; j < neurons.length; j++) {
+            const neuron = neurons[j];
+
+
+            const uid = neuron.uid;
+            const stake = neuron.stake;
+            const rank = neuron.rank;
+            const incentive = neuron.incentive;
+            const trust = neuron.trust;
+            const consensus = neuron.consensus;
+            const dividends = neuron.dividends;
+            const emission = neuron.emission;
+            const ip = neuron.ip;
+            const port = neuron.port;
+            const version = neuron.version;
+            const coldkey = ss58.codec(42).encode(neuron.coldkey);
+            const hotkey = ss58.codec(42).encode(neuron.hotkey);
+            const last_updated = neuron.lastUpdate;
+            const blockNum = ctx.block.height;
+            const blockHash = ctx.block.hash;
+
+            const data = new Neuron({
+                id: makeid(12).toLowerCase(),
+                uid: uid,
+                stake: stake,
+                rank: rank,
+                incentive: incentive,
+                trust: trust,
+                consensus: consensus,
+                dividends: dividends,
+                emission: emission,
+                ip: ip,
+                port: port,
+                version: version,
+                lastUpdated: last_updated,
+                createdAt: new Date(),
+                })
+
+
+            const balance = await system_ctx.getAsV107(neuron.coldkey);
+            const user_balance = balance.data.free;
+            const account = new Account({
+                id: makeid(12).toLowerCase(),
+                coldkey: coldkey,
+                hotkey: hotkey,
+                balance: user_balance,
+                neuron: [data],
+                blockNum: blockNum,
+                blockHash: blockHash,
+
+            })
+
+            data.account = account;
+
+
+            await ctx.store.save(account);
+            await ctx.store.save(data);
+
+            ctx.log.info(`saved neuron: ${uid}`);
+        }
+
         ctx.log.info(neurons)
     }
 
