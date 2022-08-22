@@ -101,8 +101,8 @@ processor.addPreHook(async ctx => {
             })
 
 
-        const balance = await system_ctx.getAsV107(neuron.coldkey);
-        ctx.log.info(balance);
+        // const balance = await system_ctx.getAsV107(neuron.coldkey);
+        // ctx.log.info(balance);
         const account = new Account({
             id: makeid(12).toLowerCase(),
             coldkey: coldkey,
