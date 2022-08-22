@@ -19,7 +19,8 @@ import {Store, TypeormDatabase} from "@subsquid/typeorm-store"
 import { 
     SubtensorModuleNeuronsStorage, 
     SubtensorModuleHotkeysStorage,
-    SubtensorModuleNStorage
+    SubtensorModuleNStorage,
+    SystemAccountStorage
 } from "./types/storage";
 
 
@@ -61,6 +62,7 @@ processor.addPreHook(async ctx => {
     
     for (let i = 0; i < n; i++) {
         const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
+        const system_ctx = new SystemAccountStorage(ctx);
         const neuron = await neurons_ctx.getAsV107(i);
         // ctx.log.info(neuron);
 
@@ -98,6 +100,9 @@ processor.addPreHook(async ctx => {
             createdAt: new Date(),
             })
 
+
+        const balance = await system_ctx.getAsV107(neuron.coldkey);
+        ctx.log.info(balance);
         const account = new Account({
             id: makeid(12).toLowerCase(),
             coldkey: coldkey,

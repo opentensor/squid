@@ -1,6 +1,7 @@
 import assert from 'assert'
 import {Chain, ChainContext, EventContext, Event, Result} from './support'
 import * as v107 from './v107'
+import * as v100 from './v100'
 
 export class BalancesTransferEvent {
   private readonly _chain: Chain
@@ -27,6 +28,21 @@ export class BalancesTransferEvent {
    */
   get asV107(): [v107.AccountId, v107.AccountId, v107.Balance] {
     assert(this.isV107)
+    return this._chain.decodeEvent(this.event)
+  }
+
+  /**
+   * Transfer succeeded.
+   */
+  get isV100(): boolean {
+    return this._chain.getEventHash('Balances.Transfer') === '0ffdf35c495114c2d42a8bf6c241483fd5334ca0198662e14480ad040f1e3a66'
+  }
+
+  /**
+   * Transfer succeeded.
+   */
+  get asV100(): {from: v100.AccountId32, to: v100.AccountId32, amount: bigint} {
+    assert(this.isV100)
     return this._chain.decodeEvent(this.event)
   }
 }
