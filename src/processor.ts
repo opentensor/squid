@@ -64,7 +64,7 @@ processor.addPreHook(async ctx => {
         const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
         const system_ctx = new SystemAccountStorage(ctx);
         const neuron = await neurons_ctx.getAsV107(i);
-        // ctx.log.info(neuron);
+        ctx.log.info(neuron);
 
         const uid = neuron.uid;
         const stake = neuron.stake;
