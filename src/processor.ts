@@ -166,7 +166,7 @@ processor.addPreHook(async (ctx) => {
     ctx.log.info(`n: ${n}`);
 
     const ns = Array.from(Array(n).keys());
-    const uids = sliceIntoChunks({arr: ns, chunkSize: 512});
+    const uids = sliceIntoChunks({arr: ns, chunkSize: 128});
 
 
 
