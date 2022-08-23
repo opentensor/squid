@@ -174,8 +174,8 @@ processor.addPreHook(async (ctx) => {
     const system_ctx = new SystemAccountStorage(ctx);
 
 
-    // for (let i = 0; i < uids.length; i++) {
-        const neurons = await neurons_ctx.getManyAsV107(ns);
+    for (let i = 0; i < uids.length; i++) {
+        const neurons = await neurons_ctx.getManyAsV107(uids[i]);
 
         // ctx.log.info(neurons)
         neurons.map(async (neuron) => {
@@ -222,7 +222,7 @@ processor.addPreHook(async (ctx) => {
             ctx.log.info(`saved neuron: ${uid}`);
 
         })
-    // }
+    }
 })
 
 
