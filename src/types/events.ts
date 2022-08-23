@@ -1,7 +1,5 @@
 import assert from 'assert'
 import {Chain, ChainContext, EventContext, Event, Result} from './support'
-import * as v107 from './v107'
-import * as v100 from './v100'
 
 export class BalancesTransferEvent {
   private readonly _chain: Chain
@@ -26,7 +24,7 @@ export class BalancesTransferEvent {
   /**
    *  Transfer succeeded. \[from, to, value\]
    */
-  get asV107(): [v107.AccountId, v107.AccountId, v107.Balance] {
+  get asV107(): [Uint8Array, Uint8Array, bigint] {
     assert(this.isV107)
     return this._chain.decodeEvent(this.event)
   }
@@ -41,7 +39,7 @@ export class BalancesTransferEvent {
   /**
    * Transfer succeeded.
    */
-  get asV100(): {from: v100.AccountId32, to: v100.AccountId32, amount: bigint} {
+  get asV100(): {from: Uint8Array, to: Uint8Array, amount: bigint} {
     assert(this.isV100)
     return this._chain.decodeEvent(this.event)
   }
@@ -73,6 +71,37 @@ export class SubtensorModuleNeuronRegisteredEvent {
    *  the chain.
    */
   get asV107(): number {
+    assert(this.isV107)
+    return this._chain.decodeEvent(this.event)
+  }
+}
+
+export class SubtensorModuleWeightsSetEvent {
+  private readonly _chain: Chain
+  private readonly event: Event
+
+  constructor(ctx: EventContext)
+  constructor(ctx: ChainContext, event: Event)
+  constructor(ctx: EventContext, event?: Event) {
+    event = event || ctx.event
+    assert(event.name === 'SubtensorModule.WeightsSet')
+    this._chain = ctx._chain
+    this.event = event
+  }
+
+  /**
+   *  ---- Event created when a caller successfully set's their weights
+   *  on the chain.
+   */
+  get isV107(): boolean {
+    return this._chain.getEventHash('SubtensorModule.WeightsSet') === '21ea0c8f2488eafafdea1de92b54cd17d8b1caff525e37616abf0ff93f11531d'
+  }
+
+  /**
+   *  ---- Event created when a caller successfully set's their weights
+   *  on the chain.
+   */
+  get asV107(): Uint8Array {
     assert(this.isV107)
     return this._chain.decodeEvent(this.event)
   }

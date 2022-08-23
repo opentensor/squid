@@ -4,7 +4,8 @@
   "typesBundle": "types.json",
   "events": [
     "SubtensorModule.NeuronRegistered",
-    "Balances.Transfer"
+    "Balances.Transfer",
+    "SubtensorModule.WeightsSet"
   ],
   "calls": [],
   "storage": [

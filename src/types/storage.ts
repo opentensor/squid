@@ -25,12 +25,12 @@ export class SubtensorModuleHotkeysStorage {
   /**
    *  ---- Maps from hotkey to uid.
    */
-  async getAsV107(key: v107.AccountId): Promise<number> {
+  async getAsV107(key: Uint8Array): Promise<number> {
     assert(this.isV107)
     return this._chain.getStorage(this.blockHash, 'SubtensorModule', 'Hotkeys', key)
   }
 
-  async getManyAsV107(keys: v107.AccountId[]): Promise<(number)[]> {
+  async getManyAsV107(keys: Uint8Array[]): Promise<(number)[]> {
     assert(this.isV107)
     return this._chain.queryStorage(this.blockHash, 'SubtensorModule', 'Hotkeys', keys.map(k => [k]))
   }
@@ -164,12 +164,12 @@ export class SystemAccountStorage {
   /**
    *  The full account information for a particular account ID.
    */
-  async getAsV107(key: v107.AccountId): Promise<v107.AccountInfo> {
+  async getAsV107(key: Uint8Array): Promise<v107.AccountInfo> {
     assert(this.isV107)
     return this._chain.getStorage(this.blockHash, 'System', 'Account', key)
   }
 
-  async getManyAsV107(keys: v107.AccountId[]): Promise<(v107.AccountInfo)[]> {
+  async getManyAsV107(keys: Uint8Array[]): Promise<(v107.AccountInfo)[]> {
     assert(this.isV107)
     return this._chain.queryStorage(this.blockHash, 'System', 'Account', keys.map(k => [k]))
   }
@@ -184,12 +184,12 @@ export class SystemAccountStorage {
   /**
    *  The full account information for a particular account ID.
    */
-  async getAsV100(key: v100.AccountId32): Promise<v100.AccountInfo> {
+  async getAsV100(key: Uint8Array): Promise<v100.AccountInfo> {
     assert(this.isV100)
     return this._chain.getStorage(this.blockHash, 'System', 'Account', key)
   }
 
-  async getManyAsV100(keys: v100.AccountId32[]): Promise<(v100.AccountInfo)[]> {
+  async getManyAsV100(keys: Uint8Array[]): Promise<(v100.AccountInfo)[]> {
     assert(this.isV100)
     return this._chain.queryStorage(this.blockHash, 'System', 'Account', keys.map(k => [k]))
   }

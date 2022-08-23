@@ -1,7 +1,5 @@
 import type {Result} from './support'
 
-export type AccountId32 = Uint8Array
-
 export interface NeuronMetadata {
   version: number
   ip: bigint
@@ -9,8 +7,8 @@ export interface NeuronMetadata {
   ipType: number
   uid: number
   modality: number
-  hotkey: AccountId32
-  coldkey: AccountId32
+  hotkey: Uint8Array
+  coldkey: Uint8Array
   active: number
   lastUpdate: bigint
   priority: bigint

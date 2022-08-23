@@ -23,19 +23,23 @@ import {
     SystemAccountStorage
 } from "./types/storage";
 
+import {
+    BalancesTransferEvent
+} from "./types/events"
 
 
-// const processor = new SubstrateProcessor(new TypeormDatabase());
 
-// processor.setBatchSize(500);
-// processor.setDataSource({
-//   archive: 'http://morpheus.opentensor.ai:8889/graphql',
-//   chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
+const processor = new SubstrateProcessor(new TypeormDatabase());
+
+processor.setBatchSize(500);
+processor.setDataSource({
+  archive: 'http://morpheus.opentensor.ai:8889/graphql',
+  chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
   
-// });
+});
 
-// processor.setTypesBundle('types.json');
-// processor.setBlockRange({ from: 300000 })
+processor.setTypesBundle('types.json');
+processor.setBlockRange({ from: 300000 })
 
 
 const logger = (data: any) => {
@@ -308,62 +312,152 @@ interface SliceProps {
 //         // ctx.log.info('saved account: '+uid);
 //     }
 // })
-// processor.addEventHandler('SubtensorModule.NeuronRegistered', processTransfers) 
+processor.addEventHandler('SubtensorModule.WeightsSet', processTransfers) 
 // processor.addEventHandler("Balances.Transfer", processTransfers);
 
-// async function processTransfers(
-//   ctx: EventHandlerContext<Store, { event: { args: true } }>
-// ) {
-//     const event = ctx.event;
-//     ctx.log.info(`Info Log example ${JSON.stringify(event)}`);
+async function processTransfers(
+  ctx: EventHandlerContext<Store, { event: { args: true } }>
+) {
+    const event = ctx.event;
+    ctx.log.info(`Info Log example ${JSON.stringify(event)}`);
 
-//     // if (event.name === "SubtensorModule.NeuronRegistered") {
-//     //     const coldkey = event.args.call.args.coldkey;
-//     //     const hotkey = event.args.call.args.hotkey;
+    // if (event.name === "SubtensorModule.NeuronRegistered") {
+    //     const coldkey = event.args.call.args.coldkey;
+    //     const hotkey = event.args.call.args.hotkey;
         
-//     //     const storage_ctx = new SubtensorModuleHotkeysStorage(ctx);
-//     //     const account = new Account();
-//     //     account.coldkey = coldkey;
-//     //     account.hotkey = hotkey;
-//     //     let account_address = ss58.decode(account.coldkey).bytes;
+    //     const storage_ctx = new SubtensorModuleHotkeysStorage(ctx);
+    //     const account = new Account();
+    //     account.coldkey = coldkey;
+    //     account.hotkey = hotkey;
+    //     let account_address = ss58.decode(account.coldkey).bytes;
 
-//     //     let txn_account = await storage_ctx.getAsV109(account_address);
+    //     let txn_account = await storage_ctx.getAsV109(account_address);
 
-//     //     ctx.log.info(`Info Log example ${JSON.stringify(txn_account)}`);
+    //     ctx.log.info(`Info Log example ${JSON.stringify(txn_account)}`);
 
 
-//     // }
+    // }
+}
+
+
+processor.run();
+
+// const processor = new SubstrateBatchProcessor()
+//     .setBatchSize(500)
+//     .setTypesBundle('types.json')
+//     .setDataSource({
+//         // For locally-run archives:
+//         archive: 'http://morpheus.opentensor.ai:8889/graphql',
+//         chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
+//         // Lookup archive by the network name in the Subsquid registry
+//         // archive: lookupArchive("kusama", { release: "FireSquid" })
+//     })
+//     .setBlockRange({ from: 300000 })
+//     .addEvent('SubtensorModule.NeuronRegistered', {
+//         data: {event: {args: true}}
+//     } as const)
+//     .addEvent('Balances.Transfer', {
+//         data: {
+//             event: {
+//                 args: true,
+//                 extrinsic: {
+//                     hash: true,
+//                     fee: true
+//                 }
+//             }
+//         }
+//     } as const);
+
+
+// type Item = BatchProcessorItem<typeof processor>;
+// type Ctx = BatchContext<Store, Item>;
+
+// interface TransferData {
+//     id: string
+//     timestamp: Date
+//     // extrinsicHash: string
+//     from: string
+//     to: string
+//     amount: bigint
+//     fee?: bigint
 // }
 
 
-// processor.run();
+// function getTransfers(ctx: Ctx): TransferData[] {
+//     let transfers: TransferData[] = []
+//     for (let block of ctx.blocks) {
+//         for (let item of block.items) {
+//             if (item.kind === "event" && item.name === "Balances.Transfer") {
+//                 let e = new BalancesTransferEvent(ctx, item.event)
+//                 let rec: {from: Uint8Array, to: Uint8Array, amount: bigint}
+//                 rec = e.asV100
 
-const processor = new SubstrateBatchProcessor()
-    .setBatchSize(500)
-    .setTypesBundle('types.json')
-    .setDataSource({
-        // For locally-run archives:
-        archive: 'http://morpheus.opentensor.ai:8889/graphql',
-        chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
-        // Lookup archive by the network name in the Subsquid registry
-        // archive: lookupArchive("kusama", { release: "FireSquid" })
-    })
-    .setBlockRange({ from: 300000 })
-    .addEvent('SubtensorModule.NeuronRegistered', {
-        data: {event: {args: true}}
-    } as const);
+//                 transfers.push({
+//                     // some data manipulation  with `item.event` data
+//                     id: item.event.id,
+//                     timestamp: new Date(block.header.timestamp),
+//                     // extrinsicHash: item.event.extrinsic.hash,
+//                     from: ss58.codec('kusama').encode(rec.from),
+//                     to: ss58.codec('kusama').encode(rec.to),
+//                     amount: rec.amount,
+//                     fee: 125n,
+//                 })
+//             }
+//         }
+//     }
 
-type Item = BatchProcessorItem<typeof processor>;
-type Ctx = BatchContext<Store, Item>;
 
-processor.run(new TypeormDatabase(), async (ctx: Ctx) => {
-    ctx.log.info('Pre-hook');
+//     return transfers;
+// } 
+
+// function getAccount(m: Map<string, Account>, id: string): Account {
+//     let acc = m.get(id)
+//     if (acc == null) {
+//         acc = new Account()
+//         acc.id = id
+//         acc.balance = 0n
+//         m.set(id, acc)
+//     }
+//     return acc
+// }
+
+// processor.run(new TypeormDatabase(), async (ctx: Ctx) => {
+//     ctx.log.info('Pre-hook');
 
     // const n_ctx = new SubtensorModuleNStorage(ctx);
     // const n = await n_ctx.getAsV107();
 
     // ctx.log.info('n: '+n);
-})
+
+    // let transfersData = getTransfers(ctx);
+
+    // let transfers: Transfer[] = []
+
+    // for (let t of transfersData) {
+    //     let {id, blockNumber, timestamp, extrinsicHash, amount, fee} = t
+
+    //     // join some extra data
+    //     let from = getAccount(accounts, t.from)
+    //     let to = getAccount(accounts, t.to)
+
+    //     // populate the entity classes
+    //     // with the extracted data
+    //     transfers.push(new Transfer({
+    //         id,
+    //         blockNumber,
+    //         timestamp,
+    //         extrinsicHash,
+    //         from,
+    //         to,
+    //         amount,
+    //         fee
+    //     }))
+    // }
+
+    // // persist an array of entities 
+    // // in a single statement
+    // await ctx.store.insert(transfers)
+// })
 
 
 
@@ -437,13 +531,3 @@ processor.run(new TypeormDatabase(), async (ctx: Ctx) => {
 // }
 
 
-// function getAccount(m: Map<string, Account>, id: string): Account {
-//     let acc = m.get(id)
-//     if (acc == null) {
-//         acc = new Account()
-//         acc.id = id
-//         acc.balance = 0n
-//         m.set(id, acc)
-//     }
-//     return acc
-// }

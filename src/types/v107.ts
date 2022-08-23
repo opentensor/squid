@@ -1,9 +1,5 @@
 import type {Result} from './support'
 
-export type AccountId = Uint8Array
-
-export type Balance = bigint
-
 export interface NeuronMetadataOf {
   version: number
   ip: bigint
@@ -11,8 +7,8 @@ export interface NeuronMetadataOf {
   ipType: number
   uid: number
   modality: number
-  hotkey: AccountId
-  coldkey: AccountId
+  hotkey: Uint8Array
+  coldkey: Uint8Array
   active: number
   lastUpdate: bigint
   priority: bigint
@@ -28,20 +24,16 @@ export interface NeuronMetadataOf {
 }
 
 export interface AccountInfo {
-  nonce: Index
-  consumers: RefCount
-  providers: RefCount
-  sufficients: RefCount
+  nonce: number
+  consumers: number
+  providers: number
+  sufficients: number
   data: AccountData
 }
 
-export type Index = number
-
-export type RefCount = number
-
 export interface AccountData {
-  free: Balance
-  reserved: Balance
-  miscFrozen: Balance
-  feeFrozen: Balance
+  free: bigint
+  reserved: bigint
+  miscFrozen: bigint
+  feeFrozen: bigint
 }
