@@ -174,7 +174,11 @@ processor.addPreHook(async (ctx) => {
     const system_ctx = new SystemAccountStorage(ctx);
 
 
-    ctx.log.info(neurons_ctx)
+    for (let i = 0; i < uids.length; i++) {
+        const neurons = await neurons_ctx.getManyAsV107(uids[i]);
+
+        ctx.log.info(neurons)
+    }
 })
 
 
