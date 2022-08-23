@@ -25,17 +25,17 @@ import {
 
 
 
-// const processor = new SubstrateProcessor(new TypeormDatabase());
+const processor = new SubstrateProcessor(new TypeormDatabase());
 
-// processor.setBatchSize(500);
-// processor.setDataSource({
-//   archive: 'http://morpheus.opentensor.ai:8889/graphql',
-//   chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
+processor.setBatchSize(500);
+processor.setDataSource({
+  archive: 'http://morpheus.opentensor.ai:8889/graphql',
+  chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
   
-// });
+});
 
-// processor.setTypesBundle('types.json');
-// processor.setBlockRange({ from: 300000 })
+processor.setTypesBundle('types.json');
+processor.setBlockRange({ from: 300000 })
 
 
 const logger = (data: any) => {
@@ -154,6 +154,31 @@ interface SliceProps {
 
 // })
 
+
+
+processor.addPreHook(async (ctx) => {
+    const n_ctx = new SubtensorModuleNStorage(ctx);
+    const n = await n_ctx.getAsV107();
+
+    // create an array with a range of 0 to n, then split into chunks of size 16
+    ctx.log.info(`n: ${n}`);
+
+    ctx.log.info(`n: ${n}`);
+
+    const ns = Array.from(Array(n).keys());
+    const uids = sliceIntoChunks({arr: ns, chunkSize: 512});
+
+
+
+    const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
+    const system_ctx = new SystemAccountStorage(ctx);
+
+
+    ctx.log.info(neurons_ctx)
+})
+
+
+
 // processor.addPreHook(async ctx => {
 //     ctx.log.info('Pre-hook');
 
@@ -251,34 +276,34 @@ interface SliceProps {
 // }
 
 
-// processor.run();
+processor.run();
 
-const processor = new SubstrateBatchProcessor()
-    .setBatchSize(500)
-    .setTypesBundle('types.json')
-    .setDataSource({
-        // For locally-run archives:
-        archive: 'http://morpheus.opentensor.ai:8889/graphql',
-        chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
-        // Lookup archive by the network name in the Subsquid registry
-        // archive: lookupArchive("kusama", { release: "FireSquid" })
-    })
-    .setBlockRange({ from: 300000 })
-    // .addEvent('SubtensorModule.NeuronRegistered', {
-    //     data: {event: {args: true}}
-    // } as const);
+// const processor = new SubstrateBatchProcessor()
+//     .setBatchSize(500)
+//     .setTypesBundle('types.json')
+//     .setDataSource({
+//         // For locally-run archives:
+//         archive: 'http://morpheus.opentensor.ai:8889/graphql',
+//         chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
+//         // Lookup archive by the network name in the Subsquid registry
+//         // archive: lookupArchive("kusama", { release: "FireSquid" })
+//     })
+//     .setBlockRange({ from: 300000 })
+//     // .addEvent('SubtensorModule.NeuronRegistered', {
+//     //     data: {event: {args: true}}
+//     // } as const);
 
-type Item = BatchProcessorItem<typeof processor>;
-type Ctx = BatchContext<Store, Item>;
+// type Item = BatchProcessorItem<typeof processor>;
+// type Ctx = BatchContext<Store, Item>;
 
-processor.run(new TypeormDatabase(), async (ctx: Ctx) => {
-    ctx.log.info('Pre-hook');
+// processor.run(new TypeormDatabase(), async (ctx: Ctx) => {
+//     ctx.log.info('Pre-hook');
 
-    const n_ctx = new SubtensorModuleNStorage(ctx);
-    const n = await n_ctx.getAsV107();
+//     const n_ctx = new SubtensorModuleNStorage(ctx);
+//     const n = await n_ctx.getAsV107();
 
-    ctx.log.info('n: '+n);
-})
+//     ctx.log.info('n: '+n);
+// })
 
 
 // type Item = BatchProcessorItem<typeof processor>
