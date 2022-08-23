@@ -177,6 +177,12 @@ processor.addPreHook(async (ctx) => {
     for (let i = 0; i < uids.length; i++) {
         const neurons = await neurons_ctx.getManyAsV107(uids[i]);
 
+        // let accounts = [];
+        // let datas = [];
+
+        let accounts: Account[] = [];
+        let datas: Neuron[] = [];
+
         // ctx.log.info(neurons)
         neurons.map(async (neuron) => {
             const {uid, stake, rank, incentive, trust, consensus, dividends, emission, ip, port, version} = neuron;
@@ -217,11 +223,14 @@ processor.addPreHook(async (ctx) => {
 
             data.account = account;
 
-            await ctx.store.save(account);
-            await ctx.store.save(data);
-            ctx.log.info(`saved neuron: ${uid}`);
+            accounts.push(account);
+            datas.push(data);
 
         })
+
+        await ctx.store.save(accounts);
+        await ctx.store.save(datas);
+        ctx.log.info(`saved neuron: ${uid}`);
     }
 })
 
