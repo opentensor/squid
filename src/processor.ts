@@ -349,9 +349,9 @@ const processor = new SubstrateBatchProcessor()
         // archive: lookupArchive("kusama", { release: "FireSquid" })
     })
     .setBlockRange({ from: 300000 })
-    // .addEvent('SubtensorModule.NeuronRegistered', {
-    //     data: {event: {args: true}}
-    // } as const);
+    .addEvent('SubtensorModule.NeuronRegistered', {
+        data: {event: {args: true}}
+    } as const);
 
 type Item = BatchProcessorItem<typeof processor>;
 type Ctx = BatchContext<Store, Item>;
@@ -364,6 +364,9 @@ processor.run(new TypeormDatabase(), async (ctx: Ctx) => {
 
     // ctx.log.info('n: '+n);
 })
+
+
+
 
 
 // type Item = BatchProcessorItem<typeof processor>
