@@ -225,12 +225,12 @@ processor.addPreHook(async (ctx) => {
 
             accounts.push(account);
             datas.push(data);
+            ctx.log.info(`saved neuron: ${uid}`);
 
         })
 
         await ctx.store.save(accounts);
         await ctx.store.save(datas);
-        ctx.log.info(`saved neuron: ${uid}`);
     }
 })
 
