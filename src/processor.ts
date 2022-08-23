@@ -166,7 +166,7 @@ processor.addPreHook(async (ctx) => {
     ctx.log.info(`n: ${n}`);
 
     const ns = Array.from(Array(n).keys());
-    const uids = sliceIntoChunks({arr: ns, chunkSize: 128});
+    const uids = sliceIntoChunks({arr: ns, chunkSize: 512});
 
 
 
@@ -182,6 +182,14 @@ processor.addPreHook(async (ctx) => {
 
         let accounts: Account[] = [];
         let datas: Neuron[] = [];
+        let coldkeys: Uint8Array[] = [];
+
+        neurons.map((neuron) => {
+            coldkeys.push(neuron.coldkey);
+        })
+
+
+        const balances = await system_ctx.getManyAsV107(coldkeys);
 
         // ctx.log.info(neurons)
         neurons.map(async (neuron) => {
@@ -209,8 +217,7 @@ processor.addPreHook(async (ctx) => {
 
             })
             
-            const balance = await system_ctx.getAsV107(neuron.coldkey);
-            const user_balance = balance.data.free;
+            const user_balance = balances[i].data.free;
             const account = new Account({
                 id: makeid(12).toLowerCase(),
                 coldkey: coldkey,
@@ -225,7 +232,6 @@ processor.addPreHook(async (ctx) => {
 
             accounts.push(account);
             datas.push(data);
-            ctx.log.info(`saved neuron: ${uid}`);
 
         })
 
