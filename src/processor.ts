@@ -162,11 +162,8 @@ processor.addPreHook(async (ctx) => {
 
     // create an array with a range of 0 to n, then split into chunks of size 16
     ctx.log.info(`n: ${n}`);
-
-    ctx.log.info(`n: ${n}`);
-
     const ns = Array.from(Array(n).keys());
-    const uids = sliceIntoChunks({arr: ns, chunkSize: 512});
+    const uids = sliceIntoChunks({arr: ns, chunkSize: 768});
 
 
 
