@@ -177,7 +177,51 @@ processor.addPreHook(async (ctx) => {
     for (let i = 0; i < uids.length; i++) {
         const neurons = await neurons_ctx.getManyAsV107(uids[i]);
 
-        ctx.log.info(neurons)
+        // ctx.log.info(neurons)
+        neurons.map(async (neuron) => {
+            const {uid, stake, rank, incentive, trust, consensus, dividends, emission, ip, port, version} = neuron;
+            const last_updated = neuron.lastUpdate;
+            const coldkey = ss58.codec(42).encode(neuron.coldkey);
+            const hotkey = ss58.codec(42).encode(neuron.hotkey);
+            const blockNum = ctx.block.height;
+
+            const data = new Neuron({
+                id: makeid(12).toLowerCase(),
+                uid: uid,
+                stake: stake,
+                rank: rank,
+                incentive: incentive,
+                trust: trust,
+                consensus: consensus,
+                dividends: dividends,
+                emission: emission,
+                ip: ip,
+                port: port,
+                version: version,
+                lastUpdated: last_updated,
+                createdAt: new Date(),
+
+            })
+            
+            const balance = await system_ctx.getAsV107(neuron.coldkey);
+            const user_balance = balance.data.free;
+            const account = new Account({
+                id: makeid(12).toLowerCase(),
+                coldkey: coldkey,
+                hotkey: hotkey,
+                balance: user_balance,
+                neuron: [data],
+                blockNum: blockNum,
+                blockHash: ctx.block.hash,
+            })
+
+            data.account = account;
+
+            await ctx.store.save(account);
+            await ctx.store.save(data);
+            ctx.log.info(`saved neuron: ${uid}`);
+
+        })
     }
 })
 
