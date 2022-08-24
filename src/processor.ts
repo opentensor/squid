@@ -511,7 +511,7 @@ processor.run(new TypeormDatabase(), async (ctx: Ctx) => {
     const store = ctx.store;
     
     ctx.log.info(`Processing ${blocks.length} blocks`);
-    ctx.log.info(`Processing ${blocks} items`);
+    ctx.log.info(`Processing ${JSON.stringify(blocks[0])} items`);
 })
 
 
