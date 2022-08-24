@@ -29,17 +29,17 @@ import {
 
 
 
-// const processor = new SubstrateProcessor(new TypeormDatabase());
+const processor = new SubstrateProcessor(new TypeormDatabase());
 
-// processor.setBatchSize(500);
-// processor.setDataSource({
-//   archive: 'http://morpheus.opentensor.ai:8889/graphql',
-//   chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
+processor.setBatchSize(500);
+processor.setDataSource({
+  archive: 'http://morpheus.opentensor.ai:8889/graphql',
+  chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
   
-// });
+});
 
-// processor.setTypesBundle('types.json');
-// processor.setBlockRange({ from: 300000 })
+processor.setTypesBundle('types.json');
+processor.setBlockRange({ from: 300000 })
 
 
 const logger = (data: any) => {
@@ -71,94 +71,6 @@ interface SliceProps {
     arr: number[],
     chunkSize: number
 }
-
-// processor.addPreHook(async (ctx) => {
-//     const n_ctx = new SubtensorModuleNStorage(ctx);
-//     const n = await n_ctx.getAsV107();
-
-//     // create an array with a range of 0 to n, then split into chunks of size 16
-
-//     ctx.log.info(`n: ${n}`);
-
-//     const ns = Array.from(Array(n).keys());
-//     const uids = sliceIntoChunks({arr: ns, chunkSize: 512});
-
-
-
-//     const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
-//     const system_ctx = new SystemAccountStorage(ctx);
-
-//     for (let i = 0; i < uids.length; i++) {
-
-//         const neurons = await neurons_ctx.getManyAsV107(uids[i]);
-
-//         for (let j = 0; j < neurons.length; j++) {
-//             const neuron = neurons[j];
-
-
-//             const uid = neuron.uid;
-//             const stake = neuron.stake;
-//             const rank = neuron.rank;
-//             const incentive = neuron.incentive;
-//             const trust = neuron.trust;
-//             const consensus = neuron.consensus;
-//             const dividends = neuron.dividends;
-//             const emission = neuron.emission;
-//             const ip = neuron.ip;
-//             const port = neuron.port;
-//             const version = neuron.version;
-//             const coldkey = ss58.codec(42).encode(neuron.coldkey);
-//             const hotkey = ss58.codec(42).encode(neuron.hotkey);
-//             const last_updated = neuron.lastUpdate;
-//             const blockNum = ctx.block.height;
-//             const blockHash = ctx.block.hash;
-
-//             const data = new Neuron({
-//                 id: makeid(12).toLowerCase(),
-//                 uid: uid,
-//                 stake: stake,
-//                 rank: rank,
-//                 incentive: incentive,
-//                 trust: trust,
-//                 consensus: consensus,
-//                 dividends: dividends,
-//                 emission: emission,
-//                 ip: ip,
-//                 port: port,
-//                 version: version,
-//                 lastUpdated: last_updated,
-//                 createdAt: new Date(),
-//                 })
-
-
-//             const balance = await system_ctx.getAsV107(neuron.coldkey);
-//             const user_balance = balance.data.free;
-//             const account = new Account({
-//                 id: makeid(12).toLowerCase(),
-//                 coldkey: coldkey,
-//                 hotkey: hotkey,
-//                 balance: user_balance,
-//                 neuron: [data],
-//                 blockNum: blockNum,
-//                 blockHash: blockHash,
-
-//             })
-
-//             data.account = account;
-
-
-//             await ctx.store.save(account);
-//             await ctx.store.save(data);
-
-//             ctx.log.info(`saved neuron: ${uid}`);
-//         }
-
-//         // ctx.log.info(neurons)
-//     }
-
-// })
-
-
 
 // processor.addPreHook(async (ctx) => {
 //     const n_ctx = new SubtensorModuleNStorage(ctx);
@@ -242,135 +154,46 @@ interface SliceProps {
 // })
 
 
+processor.addPreHook(async (ctx) => {
+    // ctx.log.info(`processing block ${ctx.block.height}`);
 
-// processor.addPreHook(async ctx => {
-//     ctx.log.info('Pre-hook');
-
-//     const n_ctx = new SubtensorModuleNStorage(ctx);
-//     const n = await n_ctx.getAsV107();
-    
-    
-//     for (let i = 0; i < n; i++) {
-//         const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
-//         const system_ctx = new SystemAccountStorage(ctx);
-//         const neuron = await neurons_ctx.getAsV107(i);
-//         // ctx.log.info(neuron);
-
-//         const uid = neuron.uid;
-//         const stake = neuron.stake;
-//         const rank = neuron.rank;
-//         const incentive = neuron.incentive;
-//         const trust = neuron.trust;
-//         const consensus = neuron.consensus;
-//         const dividends = neuron.dividends;
-//         const emission = neuron.emission;
-//         const ip = neuron.ip;
-//         const port = neuron.port;
-//         const version = neuron.version;
-//         const coldkey = ss58.codec(42).encode(neuron.coldkey);
-//         const hotkey = ss58.codec(42).encode(neuron.hotkey);
-//         const last_updated = neuron.lastUpdate;
-//         const blockNum = ctx.block.height;
-//         const blockHash = ctx.block.hash;
-        
-//         const data = new Neuron({
-//             id: makeid(12).toLowerCase(),
-//             uid: uid,
-//             stake: stake,
-//             rank: rank,
-//             incentive: incentive,
-//             trust: trust,
-//             consensus: consensus,
-//             dividends: dividends,
-//             emission: emission,
-//             ip: ip,
-//             port: port,
-//             version: version,
-//             lastUpdated: last_updated,
-//             createdAt: new Date(),
-//             })
+    if (ctx.block.height % 100 === 0) {
+        ctx.log.info(`processing block ${ctx.block.height}`);
+    }
+})
 
 
-//         const balance = await system_ctx.getAsV107(neuron.coldkey);
-//         const user_balance = balance.data.free;
-//         const account = new Account({
-//             id: makeid(12).toLowerCase(),
-//             coldkey: coldkey,
-//             hotkey: hotkey,
-//             balance: user_balance,
-//             neuron: [data],
-//             blockNum: blockNum,
-//             blockHash: blockHash,
+processor.run();
 
-//         })
-
-//         data.account = account;
-
-
-//         await ctx.store.save(account);
-//         await ctx.store.save(data);
-//         // ctx.log.info('saved account: '+uid);
-//     }
-// })
-// processor.addEventHandler('SubtensorModule.WeightsSet', processTransfers) 
-// processor.addEventHandler("Balances.Transfer", processTransfers);
-
-// async function processTransfers(
-//   ctx: EventHandlerContext<Store, { event: { args: true } }>
-// ) {
-//     const event = ctx.event;
-//     ctx.log.info(`Info Log example ${JSON.stringify(event)}`);
-
-//     // if (event.name === "SubtensorModule.NeuronRegistered") {
-//     //     const coldkey = event.args.call.args.coldkey;
-//     //     const hotkey = event.args.call.args.hotkey;
-        
-//     //     const storage_ctx = new SubtensorModuleHotkeysStorage(ctx);
-//     //     const account = new Account();
-//     //     account.coldkey = coldkey;
-//     //     account.hotkey = hotkey;
-//     //     let account_address = ss58.decode(account.coldkey).bytes;
-
-//     //     let txn_account = await storage_ctx.getAsV109(account_address);
-
-//     //     ctx.log.info(`Info Log example ${JSON.stringify(txn_account)}`);
+// const processor = new SubstrateBatchProcessor()
+//     .setBatchSize(500)
+//     .setTypesBundle('types.json')
+//     .setDataSource({
+//         // For locally-run archives:
+//         archive: 'http://morpheus.opentensor.ai:8889/graphql',
+//         chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
+//         // Lookup archive by the network name in the Subsquid registry
+//         // archive: lookupArchive("kusama", { release: "FireSquid" })
+//     })
+//     .setBlockRange({ from: 300000 })
+//     .addEvent('SubtensorModule.NeuronRegistered', {
+//         data: {event: {args: true}}
+//     } as const)
+//     .addEvent('Balances.Transfer', {
+//         data: {
+//             event: {
+//                 args: true,
+//                 extrinsic: {
+//                     hash: true,
+//                     fee: true
+//                 }
+//             }
+//         }
+//     } as const);
 
 
-//     // }
-// }
-
-
-// processor.run();
-
-const processor = new SubstrateBatchProcessor()
-    .setBatchSize(500)
-    .setTypesBundle('types.json')
-    .setDataSource({
-        // For locally-run archives:
-        archive: 'http://morpheus.opentensor.ai:8889/graphql',
-        chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
-        // Lookup archive by the network name in the Subsquid registry
-        // archive: lookupArchive("kusama", { release: "FireSquid" })
-    })
-    .setBlockRange({ from: 300000 })
-    .addEvent('SubtensorModule.NeuronRegistered', {
-        data: {event: {args: true}}
-    } as const)
-    .addEvent('Balances.Transfer', {
-        data: {
-            event: {
-                args: true,
-                extrinsic: {
-                    hash: true,
-                    fee: true
-                }
-            }
-        }
-    } as const);
-
-
-type Item = BatchProcessorItem<typeof processor>;
-type Ctx = BatchContext<Store, Item>;
+// type Item = BatchProcessorItem<typeof processor>;
+// type Ctx = BatchContext<Store, Item>;
 
 // interface TransferData {
 //     id: string
@@ -504,15 +327,15 @@ type Ctx = BatchContext<Store, Item>;
 // })
 
 
-processor.run(new TypeormDatabase(), async (ctx: Ctx) => {
-    ctx.log.info('Pre-hook');
+// processor.run(new TypeormDatabase(), async (ctx: Ctx) => {
+//     ctx.log.info('Pre-hook');
 
-    const blocks = ctx.blocks;
-    const store = ctx.store;
+//     const blocks = ctx.blocks;
+//     const store = ctx.store;
     
-    ctx.log.info(`Processing ${blocks.length} blocks`);
-    ctx.log.info(`Processing ${JSON.stringify(blocks[0])} items`);
-})
+//     ctx.log.info(`Processing ${blocks.length} blocks`);
+//     ctx.log.info(`Processing ${JSON.stringify(blocks[0])} items`);
+// })
 
 
 
