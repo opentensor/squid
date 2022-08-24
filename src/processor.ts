@@ -29,17 +29,17 @@ import {
 
 
 
-const processor = new SubstrateProcessor(new TypeormDatabase());
+// const processor = new SubstrateProcessor(new TypeormDatabase());
 
-processor.setBatchSize(500);
-processor.setDataSource({
-  archive: 'http://morpheus.opentensor.ai:8889/graphql',
-  chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
+// processor.setBatchSize(500);
+// processor.setDataSource({
+//   archive: 'http://morpheus.opentensor.ai:8889/graphql',
+//   chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
   
-});
+// });
 
-processor.setTypesBundle('types.json');
-processor.setBlockRange({ from: 300000 })
+// processor.setTypesBundle('types.json');
+// processor.setBlockRange({ from: 300000 })
 
 
 const logger = (data: any) => {
@@ -312,65 +312,65 @@ interface SliceProps {
 //         // ctx.log.info('saved account: '+uid);
 //     }
 // })
-processor.addEventHandler('SubtensorModule.WeightsSet', processTransfers) 
+// processor.addEventHandler('SubtensorModule.WeightsSet', processTransfers) 
 // processor.addEventHandler("Balances.Transfer", processTransfers);
 
-async function processTransfers(
-  ctx: EventHandlerContext<Store, { event: { args: true } }>
-) {
-    const event = ctx.event;
-    ctx.log.info(`Info Log example ${JSON.stringify(event)}`);
+// async function processTransfers(
+//   ctx: EventHandlerContext<Store, { event: { args: true } }>
+// ) {
+//     const event = ctx.event;
+//     ctx.log.info(`Info Log example ${JSON.stringify(event)}`);
 
-    // if (event.name === "SubtensorModule.NeuronRegistered") {
-    //     const coldkey = event.args.call.args.coldkey;
-    //     const hotkey = event.args.call.args.hotkey;
+//     // if (event.name === "SubtensorModule.NeuronRegistered") {
+//     //     const coldkey = event.args.call.args.coldkey;
+//     //     const hotkey = event.args.call.args.hotkey;
         
-    //     const storage_ctx = new SubtensorModuleHotkeysStorage(ctx);
-    //     const account = new Account();
-    //     account.coldkey = coldkey;
-    //     account.hotkey = hotkey;
-    //     let account_address = ss58.decode(account.coldkey).bytes;
+//     //     const storage_ctx = new SubtensorModuleHotkeysStorage(ctx);
+//     //     const account = new Account();
+//     //     account.coldkey = coldkey;
+//     //     account.hotkey = hotkey;
+//     //     let account_address = ss58.decode(account.coldkey).bytes;
 
-    //     let txn_account = await storage_ctx.getAsV109(account_address);
+//     //     let txn_account = await storage_ctx.getAsV109(account_address);
 
-    //     ctx.log.info(`Info Log example ${JSON.stringify(txn_account)}`);
-
-
-    // }
-}
+//     //     ctx.log.info(`Info Log example ${JSON.stringify(txn_account)}`);
 
 
-processor.run();
-
-// const processor = new SubstrateBatchProcessor()
-//     .setBatchSize(500)
-//     .setTypesBundle('types.json')
-//     .setDataSource({
-//         // For locally-run archives:
-//         archive: 'http://morpheus.opentensor.ai:8889/graphql',
-//         chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
-//         // Lookup archive by the network name in the Subsquid registry
-//         // archive: lookupArchive("kusama", { release: "FireSquid" })
-//     })
-//     .setBlockRange({ from: 300000 })
-//     .addEvent('SubtensorModule.NeuronRegistered', {
-//         data: {event: {args: true}}
-//     } as const)
-//     .addEvent('Balances.Transfer', {
-//         data: {
-//             event: {
-//                 args: true,
-//                 extrinsic: {
-//                     hash: true,
-//                     fee: true
-//                 }
-//             }
-//         }
-//     } as const);
+//     // }
+// }
 
 
-// type Item = BatchProcessorItem<typeof processor>;
-// type Ctx = BatchContext<Store, Item>;
+// processor.run();
+
+const processor = new SubstrateBatchProcessor()
+    .setBatchSize(500)
+    .setTypesBundle('types.json')
+    .setDataSource({
+        // For locally-run archives:
+        archive: 'http://morpheus.opentensor.ai:8889/graphql',
+        chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
+        // Lookup archive by the network name in the Subsquid registry
+        // archive: lookupArchive("kusama", { release: "FireSquid" })
+    })
+    .setBlockRange({ from: 300000 })
+    .addEvent('SubtensorModule.NeuronRegistered', {
+        data: {event: {args: true}}
+    } as const)
+    .addEvent('Balances.Transfer', {
+        data: {
+            event: {
+                args: true,
+                extrinsic: {
+                    hash: true,
+                    fee: true
+                }
+            }
+        }
+    } as const);
+
+
+type Item = BatchProcessorItem<typeof processor>;
+type Ctx = BatchContext<Store, Item>;
 
 // interface TransferData {
 //     id: string
@@ -421,43 +421,98 @@ processor.run();
 //     return acc
 // }
 
-// processor.run(new TypeormDatabase(), async (ctx: Ctx) => {
-//     ctx.log.info('Pre-hook');
 
-    // const n_ctx = new SubtensorModuleNStorage(ctx);
-    // const n = await n_ctx.getAsV107();
+// processor.addPreHook(async (ctx) => {
+//     const n_ctx = new SubtensorModuleNStorage(ctx);
+//     const n = await n_ctx.getAsV107();
 
-    // ctx.log.info('n: '+n);
+//     // create an array with a range of 0 to n, then split into chunks of size 16
+//     ctx.log.info(`n: ${n}`);
+//     const ns = Array.from(Array(n).keys());
+//     const uids = sliceIntoChunks({arr: ns, chunkSize: 512});
 
-    // let transfersData = getTransfers(ctx);
 
-    // let transfers: Transfer[] = []
 
-    // for (let t of transfersData) {
-    //     let {id, blockNumber, timestamp, extrinsicHash, amount, fee} = t
+//     const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
+//     const system_ctx = new SystemAccountStorage(ctx);
 
-    //     // join some extra data
-    //     let from = getAccount(accounts, t.from)
-    //     let to = getAccount(accounts, t.to)
 
-    //     // populate the entity classes
-    //     // with the extracted data
-    //     transfers.push(new Transfer({
-    //         id,
-    //         blockNumber,
-    //         timestamp,
-    //         extrinsicHash,
-    //         from,
-    //         to,
-    //         amount,
-    //         fee
-    //     }))
-    // }
+//     for (let i = 0; i < uids.length; i++) {
+//         const neurons = await neurons_ctx.getManyAsV107(uids[i]);
 
-    // // persist an array of entities 
-    // // in a single statement
-    // await ctx.store.insert(transfers)
+//         // let accounts = [];
+//         // let datas = [];
+
+//         let accounts: Account[] = [];
+//         let datas: Neuron[] = [];
+//         let coldkeys: Uint8Array[] = [];
+
+//         neurons.map((neuron) => {
+//             coldkeys.push(neuron.coldkey);
+//         })
+
+
+//         const balances = await system_ctx.getManyAsV107(coldkeys);
+
+//         // ctx.log.info(neurons)
+//         neurons.map(async (neuron) => {
+//             const {uid, stake, rank, incentive, trust, consensus, dividends, emission, ip, port, version} = neuron;
+//             const last_updated = neuron.lastUpdate;
+//             const coldkey = ss58.codec(42).encode(neuron.coldkey);
+//             const hotkey = ss58.codec(42).encode(neuron.hotkey);
+//             const blockNum = ctx.block.height;
+
+//             const data = new Neuron({
+//                 id: makeid(12).toLowerCase(),
+//                 uid: uid,
+//                 stake: stake,
+//                 rank: rank,
+//                 incentive: incentive,
+//                 trust: trust,
+//                 consensus: consensus,
+//                 dividends: dividends,
+//                 emission: emission,
+//                 ip: ip,
+//                 port: port,
+//                 version: version,
+//                 lastUpdated: last_updated,
+//                 createdAt: new Date(),
+
+//             })
+            
+//             const user_balance = balances[i].data.free;
+//             const account = new Account({
+//                 id: makeid(12).toLowerCase(),
+//                 coldkey: coldkey,
+//                 hotkey: hotkey,
+//                 balance: user_balance,
+//                 neuron: [data],
+//                 blockNum: blockNum,
+//                 blockHash: ctx.block.hash,
+//             })
+
+//             data.account = account;
+
+//             accounts.push(account);
+//             datas.push(data);
+
+//         })
+
+//         await ctx.store.save(accounts);
+//         await ctx.store.save(datas);
+//     }
 // })
+
+
+processor.run(new TypeormDatabase(), async (ctx: Ctx) => {
+    ctx.log.info('Pre-hook');
+
+    const blocks = ctx.blocks;
+    const store = ctx.store;
+    
+    ctx.log.info(`Processing ${blocks.length} blocks`);
+    ctx.log.info(`Processing ${blocks} items`);
+})
 
 
 
