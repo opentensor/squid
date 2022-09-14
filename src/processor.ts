@@ -189,7 +189,7 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             data.createdAt = new Date();
             data.blockNum = blockNum;
 
-            account_hotkey.neuron = data;
+            account_hotkey.neuron = [data];
             account_hotkey.blockNum = blockNum;
             account.hotkeys = [...account.hotkeys, account_hotkey]
             // account.hotkeys = [account_hotkey]
@@ -197,10 +197,9 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             account.blockNum = blockNum;
 
 
-
+            await ctx.store.save(account_hotkey);
             await ctx.store.save(account);
             await ctx.store.save(data);
-            await ctx.store.save(account_hotkey);
 
 
 
