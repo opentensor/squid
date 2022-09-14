@@ -1,6 +1,7 @@
 import assert from 'assert'
 import {Block, Chain, ChainContext, BlockContext, Result} from './support'
 import * as v100 from './v100'
+import * as v106 from './v106'
 
 export class SubtensorModuleHotkeysStorage {
   private readonly _chain: Chain
@@ -114,6 +115,26 @@ export class SubtensorModuleNeuronsStorage {
   }
 
   /**
+   *  ---- Maps from uid to neuron.
+   */
+  get isV106() {
+    return this._chain.getStorageItemTypeHash('SubtensorModule', 'Neurons') === 'cbc065bbbd03da47ff8773a7e0759ac31699415f3b19f3daf59a3bee00cd302e'
+  }
+
+  /**
+   *  ---- Maps from uid to neuron.
+   */
+  async getAsV106(key: number): Promise<v106.NeuronMetadata | undefined> {
+    assert(this.isV106)
+    return this._chain.getStorage(this.blockHash, 'SubtensorModule', 'Neurons', key)
+  }
+
+  async getManyAsV106(keys: number[]): Promise<(v106.NeuronMetadata | undefined)[]> {
+    assert(this.isV106)
+    return this._chain.queryStorage(this.blockHash, 'SubtensorModule', 'Neurons', keys.map(k => [k]))
+  }
+
+  /**
    * Checks whether the storage item is defined for the current chain version.
    */
   get isExists(): boolean {
@@ -150,6 +171,26 @@ export class SystemAccountStorage {
 
   async getManyAsV100(keys: Uint8Array[]): Promise<(v100.AccountInfo)[]> {
     assert(this.isV100)
+    return this._chain.queryStorage(this.blockHash, 'System', 'Account', keys.map(k => [k]))
+  }
+
+  /**
+   *  The full account information for a particular account ID.
+   */
+  get isV106() {
+    return this._chain.getStorageItemTypeHash('System', 'Account') === '1ddc7ade926221442c388ee4405a71c9428e548fab037445aaf4b3a78f4735c1'
+  }
+
+  /**
+   *  The full account information for a particular account ID.
+   */
+  async getAsV106(key: Uint8Array): Promise<v106.AccountInfo> {
+    assert(this.isV106)
+    return this._chain.getStorage(this.blockHash, 'System', 'Account', key)
+  }
+
+  async getManyAsV106(keys: Uint8Array[]): Promise<(v106.AccountInfo)[]> {
+    assert(this.isV106)
     return this._chain.queryStorage(this.blockHash, 'System', 'Account', keys.map(k => [k]))
   }
 

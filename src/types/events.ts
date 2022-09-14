@@ -28,6 +28,21 @@ export class BalancesTransferEvent {
     assert(this.isV100)
     return this._chain.decodeEvent(this.event)
   }
+
+  /**
+   * Transfer succeeded.
+   */
+  get isV106(): boolean {
+    return this._chain.getEventHash('Balances.Transfer') === '0ffdf35c495114c2d42a8bf6c241483fd5334ca0198662e14480ad040f1e3a66'
+  }
+
+  /**
+   * Transfer succeeded.
+   */
+  get asV106(): {from: Uint8Array, to: Uint8Array, amount: bigint} {
+    assert(this.isV106)
+    return this._chain.decodeEvent(this.event)
+  }
 }
 
 export class SubtensorModuleNeuronRegisteredEvent {

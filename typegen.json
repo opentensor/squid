@@ -5,7 +5,10 @@
   "events": [
     "SubtensorModule.NeuronRegistered",
     "Balances.Transfer",
-    "SubtensorModule.WeightsSet"
+    "SubtensorModule.WeightsSet",
+    "SubtensorModule.AxonServed",
+    "SubtensorModule.StakeAdded",
+    "SubtensorModule.StakeRemoved",
   ],
   "calls": [],
   "storage": [
