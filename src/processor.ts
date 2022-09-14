@@ -194,7 +194,7 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             account.balance = balances[i].data.free;
             account.blockNum = blockNum;
 
-            ctx.log.info(`account: ${_accounts}`);
+            ctx.log.info(account);
             await ctx.store.save(account_hotkey);
             await ctx.store.save(account);
             await ctx.store.save(data);
