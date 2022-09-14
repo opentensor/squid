@@ -158,7 +158,12 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             const _accounts = new Map<string, Account>(accounts_search.map((a) => [a.id, a]));
             const account = getAccount(_accounts, coldkey)
 
-            ctx.log.info(`account: ${JSON.stringify(account)}`)
+            ctx.log.info(`account: ${JSON.stringify(({key, value}: any) => {
+                if (value instanceof BigInt) {
+                    return value.toString();
+                }
+                return value;
+            })}`)
 
 
             let hotkeys = await ctx.store.findBy(Hotkey, { id: hotkey });
