@@ -12,14 +12,14 @@ type Hotkey @entity {
   id: ID!
   hotkeyAddress: String!
   account: Account!
-  neuron: Neuron @derivedFrom(field: "hotkey")
+  neuron: Neuron @derivedFrom(field: "hotkeyAddress")
 }
 
 type Neuron @entity {
   "Neuron address"
   id: ID!
-  coldkey: String!
-  hotkey: Hotkey! @unique
+  coldkeyAddress: String!
+  hotkeyAddress: Hotkey! @unique
   uid: Int!
   stake: BigInt!
   rank: BigInt!

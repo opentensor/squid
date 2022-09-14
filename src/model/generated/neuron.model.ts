@@ -15,12 +15,12 @@ export class Neuron {
   id!: string
 
   @Column_("text", {nullable: false})
-  coldkey!: string
+  coldkeyAddress!: string
 
   @Index_({unique: true})
   @OneToOne_(() => Hotkey, {nullable: false})
   @JoinColumn_()
-  hotkey!: Hotkey
+  hotkeyAddress!: Hotkey
 
   @Column_("int4", {nullable: false})
   uid!: number
