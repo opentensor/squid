@@ -96,6 +96,7 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
         // let datas = [];
 
         let accounts: Account[] = [];
+        let all_hotkeys: Hotkey[] = [];
         let datas: Neuron[] = [];
         let coldkeys: Uint8Array[] = [];
 
@@ -189,10 +190,14 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
 
             account_hotkey.blockNum = blockNum;
             account_hotkey.uid = uid;
-            account.hotkeys = [...account.hotkeys, account_hotkey]
+            account_hotkey.account = account;
+            // account.hotkeys = [...account.hotkeys, account_hotkey]
             // account.hotkeys = [account_hotkey]
             account.balance = balances[i].data.free;
             account.blockNum = blockNum;
+
+            // sort the hotkeys by colkdey address
+            // account.hotkeys = account.hotkeys.sort((a, b) => {
 
             ctx.log.info(account);
             await ctx.store.save(account_hotkey);
@@ -202,6 +207,8 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
 
 
             // accounts.push(account);
+            // datas.push(data);
+            // all_hotkeys.push(account_hotkey);
             // datas.push(data);
 
 
@@ -214,7 +221,7 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
 
         // ctx.log.info(`accounts: ${accounts}`)
 
-        await ctx.store.save(accounts);
+        // await ctx.store.save(accounts);
         // await ctx.store.save(datas);
     }
 }
