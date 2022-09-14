@@ -1,27 +1,23 @@
 type Account @entity {
   "Account address"
   id: ID!
-  coldkeyAddress: String!
   hotkeys: [Hotkey] @derivedFrom(field: "account")
+  transfers: [Transfer] @derivedFrom(field: "from")
   balance: BigInt!
-  blockNum: Int!
-  blockHash: String!
 }
+
 
 type Hotkey @entity {
   "Hotkey address"
   id: ID!
   account: Account!
-  hotkeyAddress: String!
   neuron: [Neuron] @derivedFrom(field: "hotkey")
-  blockNum: Int!
-  blockHash: String!
 }
 
 type Neuron @entity {
   "Neuron address"
   id: ID!
-  account: Account!
+  coldkey: String!
   hotkey: Hotkey!
   uid: Int!
   stake: BigInt!
@@ -38,3 +34,13 @@ type Neuron @entity {
   createdAt: DateTime!
 }
 
+type Transfer @entity {
+  "Transfer ID"
+  id: ID!
+  from: Account!
+  to: String!
+  amount: BigInt!
+  blockNum: Int!
+  blockHash: String!
+  createdAt: DateTime!
+}

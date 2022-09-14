@@ -45,6 +45,35 @@ export class BalancesTransferEvent {
   }
 }
 
+export class SubtensorModuleAxonServedEvent {
+  private readonly _chain: Chain
+  private readonly event: Event
+
+  constructor(ctx: EventContext)
+  constructor(ctx: ChainContext, event: Event)
+  constructor(ctx: EventContext, event?: Event) {
+    event = event || ctx.event
+    assert(event.name === 'SubtensorModule.AxonServed')
+    this._chain = ctx._chain
+    this.event = event
+  }
+
+  /**
+   *  --- Event created when the axon server information is added to the network.
+   */
+  get isV100(): boolean {
+    return this._chain.getEventHash('SubtensorModule.AxonServed') === '0a0f30b1ade5af5fade6413c605719d59be71340cf4884f65ee9858eb1c38f6c'
+  }
+
+  /**
+   *  --- Event created when the axon server information is added to the network.
+   */
+  get asV100(): number {
+    assert(this.isV100)
+    return this._chain.decodeEvent(this.event)
+  }
+}
+
 export class SubtensorModuleNeuronRegisteredEvent {
   private readonly _chain: Chain
   private readonly event: Event
@@ -71,6 +100,68 @@ export class SubtensorModuleNeuronRegisteredEvent {
    *  the chain.
    */
   get asV100(): number {
+    assert(this.isV100)
+    return this._chain.decodeEvent(this.event)
+  }
+}
+
+export class SubtensorModuleStakeAddedEvent {
+  private readonly _chain: Chain
+  private readonly event: Event
+
+  constructor(ctx: EventContext)
+  constructor(ctx: ChainContext, event: Event)
+  constructor(ctx: EventContext, event?: Event) {
+    event = event || ctx.event
+    assert(event.name === 'SubtensorModule.StakeAdded')
+    this._chain = ctx._chain
+    this.event = event
+  }
+
+  /**
+   *  --- Event created during when stake has been transfered from 
+   *  the coldkey onto the hotkey staking account.
+   */
+  get isV100(): boolean {
+    return this._chain.getEventHash('SubtensorModule.StakeAdded') === 'fb1b6c83a547837ce9f07d7b623e71a4fec6cea1d51d01009d24c5a20e53d816'
+  }
+
+  /**
+   *  --- Event created during when stake has been transfered from 
+   *  the coldkey onto the hotkey staking account.
+   */
+  get asV100(): [Uint8Array, bigint] {
+    assert(this.isV100)
+    return this._chain.decodeEvent(this.event)
+  }
+}
+
+export class SubtensorModuleStakeRemovedEvent {
+  private readonly _chain: Chain
+  private readonly event: Event
+
+  constructor(ctx: EventContext)
+  constructor(ctx: ChainContext, event: Event)
+  constructor(ctx: EventContext, event?: Event) {
+    event = event || ctx.event
+    assert(event.name === 'SubtensorModule.StakeRemoved')
+    this._chain = ctx._chain
+    this.event = event
+  }
+
+  /**
+   *  --- Event created when stake has been removed from 
+   *  the staking account into the coldkey account.
+   */
+  get isV100(): boolean {
+    return this._chain.getEventHash('SubtensorModule.StakeRemoved') === 'fb1b6c83a547837ce9f07d7b623e71a4fec6cea1d51d01009d24c5a20e53d816'
+  }
+
+  /**
+   *  --- Event created when stake has been removed from 
+   *  the staking account into the coldkey account.
+   */
+  get asV100(): [Uint8Array, bigint] {
     assert(this.isV100)
     return this._chain.decodeEvent(this.event)
   }

@@ -8,7 +8,7 @@
     "SubtensorModule.WeightsSet",
     "SubtensorModule.AxonServed",
     "SubtensorModule.StakeAdded",
-    "SubtensorModule.StakeRemoved",
+    "SubtensorModule.StakeRemoved"
   ],
   "calls": [],
   "storage": [

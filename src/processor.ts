@@ -11,6 +11,7 @@ import {
 
 import {
     Account,
+    Hotkey,
     Neuron,
 } from "./model/generated"
 
@@ -75,7 +76,7 @@ interface SliceProps {
 
 async function sync(ctx: BlockHandlerContext<Store, {}>) {
     const n_ctx = new SubtensorModuleNStorage(ctx);
-    const n = await n_ctx.getAsV107();
+    const n = await n_ctx.getAsV100();
 
     // create an array with a range of 0 to n, then split into chunks of size 16
     ctx.log.info(`n: ${n}`);
@@ -89,7 +90,7 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
 
 
     for (let i = 0; i < uids.length; i++) {
-        const neurons = await neurons_ctx.getManyAsV107(uids[i]);
+        const neurons = await neurons_ctx.getManyAsV100(uids[i]);
 
         // let accounts = [];
         // let datas = [];
@@ -103,7 +104,7 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
         })
 
 
-        const balances = await system_ctx.getManyAsV107(coldkeys);
+        const balances = await system_ctx.getManyAsV100(coldkeys);
 
         // ctx.log.info(neurons)
         neurons.map(async (neuron) => {
@@ -113,44 +114,61 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             const hotkey = ss58.codec(42).encode(neuron.hotkey);
             const blockNum = ctx.block.height;
 
-            const data = new Neuron({
-                id: makeid(12).toLowerCase(),
-                uid: uid,
-                stake: stake,
-                rank: rank,
-                incentive: incentive,
-                trust: trust,
-                consensus: consensus,
-                dividends: dividends,
-                emission: emission,
-                ip: ip,
-                port: port,
-                version: version,
-                lastUpdated: last_updated,
-                createdAt: new Date(),
+            // const data = new Neuron({
+            //     id: hotkey,
+            //     uid: uid,
+            //     stake: stake,
+            //     rank: rank,
+            //     incentive: incentive,
+            //     trust: trust,
+            //     consensus: consensus,
+            //     dividends: dividends,
+            //     emission: emission,
+            //     ip: ip,
+            //     port: port,
+            //     version: version,
+            //     lastUpdated: last_updated,
+            //     createdAt: new Date(),
 
-            })
+            // })
             
-            const user_balance = balances[i].data.free;
-            const account = new Account({
-                id: makeid(12).toLowerCase(),
-                coldkey: coldkey,
-                hotkey: hotkey,
-                balance: user_balance,
-                neuron: [data],
-                blockNum: blockNum,
-                blockHash: ctx.block.hash,
-            })
+            // const user_balance = balances[i].data.free;
 
-            data.account = account;
+            // const hotkeys = new Hotkey({
+            //     id: makeid(12).toLowerCase(),
+            //     account: coldkey,
+            // })
 
-            accounts.push(account);
-            datas.push(data);
+            // const account = new Account({
+            //     id: makeid(12).toLowerCase(),
+            //     coldkeyAddress: coldkey,
+            //     hotkey: hotkey,
+            //     balance: user_balance,
+            //     neuron: [data],
+            //     blockNum: blockNum,
+            //     blockHash: ctx.block.hash,
+            // })
+
+            // data.account = account;
+
+            // accounts.push(account);
+            // datas.push(data);
+
+            let accounts = await ctx.store.findBy(Account, { id: coldkey });
+            const _accounts = new Map<string, Account>(accounts.map((a) => [a.id, a]));
+
+            const account = getAccount(_accounts, coldkey)
+
+            ctx.log.info(account)
+                
+
+            // const account = getAccount(ctx.store.accounts, coldkey);
+
 
         })
 
-        await ctx.store.save(accounts);
-        await ctx.store.save(datas);
+        // await ctx.store.save(accounts);
+        // await ctx.store.save(datas);
     }
 }
 
@@ -160,6 +178,42 @@ processor.addPreHook(async (ctx) => {
         await sync(ctx);
     }
 })
+
+
+function getAccount(m: Map<string, Account>, id: string): Account {
+    let acc = m.get(id)
+    if (acc == null) {
+        acc = new Account()
+        acc.id = id
+        acc.hotkeys = []
+        acc.transfers = []
+        acc.balance = 0n
+        
+        m.set(id, acc)
+    }
+    return acc
+}
+
+function getNeuron(m: Map<string, Neuron>, id: string): Neuron {
+    let n = m.get(id)
+    if (n == null) {
+        n = new Neuron()
+        n.id = id
+        m.set(id, n)
+    }
+    return n
+}
+
+function getHotkey(m: Map<string, Hotkey>, id: string): Hotkey {
+    let h = m.get(id)
+    if (h == null) {
+        h = new Hotkey()
+        h.id = id
+        m.set(id, h)
+    }
+    return h
+}
+
 
 
 // processor.addPreHook(async (ctx) => {

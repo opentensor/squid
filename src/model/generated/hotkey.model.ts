@@ -18,15 +18,6 @@ export class Hotkey {
   @ManyToOne_(() => Account, {nullable: true})
   account!: Account
 
-  @Column_("text", {nullable: false})
-  hotkeyAddress!: string
-
   @OneToMany_(() => Neuron, e => e.hotkey)
   neuron!: Neuron[]
-
-  @Column_("int4", {nullable: false})
-  blockNum!: number
-
-  @Column_("text", {nullable: false})
-  blockHash!: string
 }

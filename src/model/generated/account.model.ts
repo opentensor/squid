@@ -1,6 +1,7 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, OneToMany as OneToMany_} from "typeorm"
 import * as marshal from "./marshal"
 import {Hotkey} from "./hotkey.model"
+import {Transfer} from "./transfer.model"
 
 @Entity_()
 export class Account {
@@ -14,18 +15,12 @@ export class Account {
   @PrimaryColumn_()
   id!: string
 
-  @Column_("text", {nullable: false})
-  coldkeyAddress!: string
-
   @OneToMany_(() => Hotkey, e => e.account)
   hotkeys!: Hotkey[]
 
+  @OneToMany_(() => Transfer, e => e.from)
+  transfers!: Transfer[]
+
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   balance!: bigint
-
-  @Column_("int4", {nullable: false})
-  blockNum!: number
-
-  @Column_("text", {nullable: false})
-  blockHash!: string
 }
