@@ -158,13 +158,6 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             const _accounts = new Map<string, Account>(accounts_search.map((a) => [a.id, a]));
             const account = getAccount(_accounts, coldkey)
 
-            ctx.log.info(`account: ${JSON.stringify(({key, value}: any) => {
-                if (value instanceof BigInt) {
-                    return value.toString();
-                }
-                return value;
-            })}`)
-
 
             let hotkeys = await ctx.store.findBy(Hotkey, { id: hotkey });
             const _hotkeys = new Map<string, Hotkey>(hotkeys.map((h) => [h.id, h]));
@@ -201,7 +194,7 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             account.balance = balances[i].data.free;
             account.blockNum = blockNum;
 
-
+            ctx.log.info(`account: ${account}`);
             await ctx.store.save(account_hotkey);
             await ctx.store.save(account);
             await ctx.store.save(data);
