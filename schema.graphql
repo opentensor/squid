@@ -21,7 +21,7 @@ type Neuron @entity {
   "Neuron address"
   id: ID!
   coldkeyAddress: String!
-  hotkey: Hotkey! @unique
+  hotkey: Hotkey!
   uid: Int!
   stake: BigInt!
   rank: BigInt!
