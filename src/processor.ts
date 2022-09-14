@@ -165,7 +165,7 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
 
 
             let neurons = await ctx.store.findBy(Neuron, { coldkeyAddress: coldkey });
-            const _neurons = new Map<string, Neuron>(neurons.map((n) => [n.hotkeyAddress.id, n]));
+            const _neurons = new Map<string, Neuron>(neurons.map((n) => [n.hotkey.id, n]));
 
             const data = getNeuron(_neurons, hotkey)
 
