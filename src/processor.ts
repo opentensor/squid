@@ -155,14 +155,12 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             // datas.push(data);
 
             let accounts = await ctx.store.findBy(Account, { id: coldkey });
-            let hotkeys = await ctx.store.findBy(Hotkey, { id: hotkey });
-
-
             const _accounts = new Map<string, Account>(accounts.map((a) => [a.id, a]));
-            const _hotkeys = new Map<string, Hotkey>(hotkeys.map((h) => [h.id, h]));
-            
-
             const account = getAccount(_accounts, coldkey)
+
+
+            let hotkeys = await ctx.store.findBy(Hotkey, { id: hotkey });
+            const _hotkeys = new Map<string, Hotkey>(hotkeys.map((h) => [h.id, h]));
             const account_hotkey = getHotkey(_hotkeys, hotkey)
 
 
