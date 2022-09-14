@@ -20,4 +20,7 @@ export class Hotkey {
 
   @OneToOne_(() => Neuron)
   neuron!: Neuron | undefined | null
+
+  @Column_("int4", {nullable: false})
+  blockNum!: number
 }

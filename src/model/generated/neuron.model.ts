@@ -58,6 +58,9 @@ export class Neuron {
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   lastUpdated!: bigint
 
+  @Column_("int4", {nullable: false})
+  blockNum!: number
+
   @Column_("timestamp with time zone", {nullable: false})
   createdAt!: Date
 }

@@ -5,6 +5,7 @@ type Account @entity {
   transfersFrom: [Transfer!]! @derivedFrom(field: "from")
   transfersTo: [Transfer!]! @derivedFrom(field: "to")
   balance: BigInt!
+  blockNum: Int!
 }
 
 
@@ -13,6 +14,7 @@ type Hotkey @entity {
   id: ID!
   account: Account!
   neuron: Neuron @derivedFrom(field: "hotkey")
+  blockNum: Int!
 }
 
 type Neuron @entity {
@@ -32,6 +34,7 @@ type Neuron @entity {
   port: Int!
   version: Int!
   lastUpdated: BigInt!
+  blockNum: Int!
   createdAt: DateTime!
 }
 

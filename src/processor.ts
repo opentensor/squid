@@ -187,19 +187,24 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             data.version = version;
             data.lastUpdated = last_updated;
             data.createdAt = new Date();
+            data.blockNum = blockNum;
 
             account_hotkey.neuron = data;
-            // account.hotkeys = [...account.hotkeys, account_hotkey]
-            account.hotkeys = [account_hotkey]
+            account_hotkey.blockNum = blockNum;
+            account.hotkeys = [...account.hotkeys, account_hotkey]
+            // account.hotkeys = [account_hotkey]
             account.balance = balances[i].data.free;
+            account.blockNum = blockNum;
 
 
 
+            await ctx.store.save(account);
+            await ctx.store.save(data);
+            await ctx.store.save(account_hotkey);
 
 
 
-
-            accounts.push(account);
+            // accounts.push(account);
             // datas.push(data);
 
 
