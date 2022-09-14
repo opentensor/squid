@@ -10,6 +10,7 @@ type Account @entity {
 type Hotkey @entity {
   "Hotkey address"
   id: ID!
+  hotkeyAddress: String!
   account: Account!
   neuron: Neuron @derivedFrom(field: "hotkey")
 }

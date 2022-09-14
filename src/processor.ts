@@ -159,9 +159,9 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             const account = getAccount(_accounts, coldkey)
 
 
-            let hotkeys = await ctx.store.findBy(Hotkey, { id: hotkey });
-            // const _hotkeys = new Map<string, Hotkey>(hotkeys.map((h) => [h.id, h]));
-            // const account_hotkey = getHotkey(_hotkeys, hotkey)
+            let hotkeys = await ctx.store.findBy(Hotkey, { hotkeyAddress: hotkey });
+            const _hotkeys = new Map<string, Hotkey>(hotkeys.map((h) => [h.id, h]));
+            const account_hotkey = getHotkey(_hotkeys, hotkey)
 
 
             // let neurons = await ctx.store.findBy(Neuron, { coldkey: coldkey });
@@ -187,7 +187,8 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             // data.createdAt = new Date();
 
             // account_hotkey.neuron = data;
-            // account.hotkeys = [...account.hotkeys, account_hotkey]
+            // account_hotkey.hotkeyAddress = hotkey;
+            account.hotkeys = [...account.hotkeys, account_hotkey]
             account.balance = balances[i].data.free;
 
 
@@ -248,6 +249,7 @@ function getHotkey(m: Map<string, Hotkey>, id: string): Hotkey {
     if (h == null) {
         h = new Hotkey()
         h.id = id
+        h.hotkeyAddress = id
         m.set(id, h)
     }
     return h
