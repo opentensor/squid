@@ -1,10 +1,19 @@
 type Account @entity {
   "Account address"
   id: ID!
-  coldkey: String!
-  hotkey: String!
+  coldkeyAddress: String!
+  hotkeys: [Hotkey] @derivedFrom(field: "account")
   balance: BigInt!
-  neuron: [Neuron] @derivedFrom(field: "account")
+  blockNum: Int!
+  blockHash: String!
+}
+
+type Hotkey @entity {
+  "Hotkey address"
+  id: ID!
+  account: Account!
+  hotkeyAddress: String!
+  neuron: [Neuron] @derivedFrom(field: "hotkey")
   blockNum: Int!
   blockHash: String!
 }
@@ -13,6 +22,7 @@ type Neuron @entity {
   "Neuron address"
   id: ID!
   account: Account!
+  hotkey: Hotkey!
   uid: Int!
   stake: BigInt!
   rank: BigInt!

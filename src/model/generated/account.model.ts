@@ -1,6 +1,6 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, OneToMany as OneToMany_} from "typeorm"
 import * as marshal from "./marshal"
-import {Neuron} from "./neuron.model"
+import {Hotkey} from "./hotkey.model"
 
 @Entity_()
 export class Account {
@@ -15,16 +15,13 @@ export class Account {
   id!: string
 
   @Column_("text", {nullable: false})
-  coldkey!: string
+  coldkeyAddress!: string
 
-  @Column_("text", {nullable: false})
-  hotkey!: string
+  @OneToMany_(() => Hotkey, e => e.account)
+  hotkeys!: Hotkey[]
 
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   balance!: bigint
-
-  @OneToMany_(() => Neuron, e => e.account)
-  neuron!: Neuron[]
 
   @Column_("int4", {nullable: false})
   blockNum!: number

@@ -1,6 +1,7 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, ManyToOne as ManyToOne_, Index as Index_} from "typeorm"
 import * as marshal from "./marshal"
 import {Account} from "./account.model"
+import {Hotkey} from "./hotkey.model"
 
 @Entity_()
 export class Neuron {
@@ -17,6 +18,10 @@ export class Neuron {
   @Index_()
   @ManyToOne_(() => Account, {nullable: true})
   account!: Account
+
+  @Index_()
+  @ManyToOne_(() => Hotkey, {nullable: true})
+  hotkey!: Hotkey
 
   @Column_("int4", {nullable: false})
   uid!: number
