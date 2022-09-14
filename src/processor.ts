@@ -249,7 +249,6 @@ function getHotkey(m: Map<string, Hotkey>, id: string): Hotkey {
     if (h == null) {
         h = new Hotkey()
         h.id = id
-        h.hotkeyAddress = id
         m.set(id, h)
     }
     return h
