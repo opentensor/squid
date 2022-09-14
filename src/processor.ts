@@ -158,7 +158,7 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             const _accounts = new Map<string, Account>(accounts_search.map((a) => [a.id, a]));
             const account = getAccount(_accounts, coldkey)
 
-            ctx.log.info(`account: ${_accounts}`)
+            ctx.log.info(`account: ${account}`)
 
 
             // let hotkeys = await ctx.store.findBy(Hotkey, { id: hotkey });
@@ -199,7 +199,7 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
 
 
 
-            // accounts.push(account);
+            accounts.push(account);
             // datas.push(data);
 
 
@@ -212,7 +212,7 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
 
         // ctx.log.info(`accounts: ${accounts}`)
 
-        // await ctx.store.save(accounts);
+        await ctx.store.save(accounts);
         // await ctx.store.save(datas);
     }
 }
