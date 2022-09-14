@@ -187,7 +187,7 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             // data.createdAt = new Date();
 
             // account_hotkey.neuron = data;
-            account.hotkeys = [...account.hotkeys, account_hotkey]
+            // account.hotkeys = [...account.hotkeys, account_hotkey]
             account.balance = balances[i].data.free;
 
 
