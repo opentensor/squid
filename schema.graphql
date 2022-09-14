@@ -13,7 +13,7 @@ type Hotkey @entity {
   "Hotkey address"
   id: ID!
   account: Account!
-  neuron: Neuron @derivedFrom(field: "hotkey")
+  neuron: [Neuron] @derivedFrom(field: "hotkey")
   blockNum: Int!
 }
 
