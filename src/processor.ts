@@ -158,47 +158,49 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             const _accounts = new Map<string, Account>(accounts_search.map((a) => [a.id, a]));
             const account = getAccount(_accounts, coldkey)
 
-
-            let hotkeys = await ctx.store.findBy(Hotkey, { id: hotkey });
-            const _hotkeys = new Map<string, Hotkey>(hotkeys.map((h) => [h.id, h]));
-            const account_hotkey = getHotkey(_hotkeys, hotkey)
+            ctx.log.info(`account: ${_accounts}`)
 
 
-            let neurons = await ctx.store.findBy(Neuron, { coldkeyAddress: coldkey });
-            const _neurons = new Map<string, Neuron>(neurons.map((n) => [n.hotkey.id, n]));
-
-            const data = getNeuron(_neurons, hotkey)
-
-            data.id = makeid(12).toLowerCase();
-            data.uid = uid;
-            data.coldkeyAddress = coldkey;
-            data.hotkey = account_hotkey;
-            data.stake = stake;
-            data.rank = rank;
-            data.incentive = incentive;
-            data.trust = trust;
-            data.consensus = consensus;
-            data.dividends = dividends;
-            data.emission = emission;
-            data.ip = ip;
-            data.port = port;
-            data.version = version;
-            data.lastUpdated = last_updated;
-            data.createdAt = new Date();
-
-            account_hotkey.neuron = data;
-            // account.hotkeys = [...account.hotkeys, account_hotkey]
-            account.hotkeys = [account_hotkey]
-            account.balance = balances[i].data.free;
+            // let hotkeys = await ctx.store.findBy(Hotkey, { id: hotkey });
+            // const _hotkeys = new Map<string, Hotkey>(hotkeys.map((h) => [h.id, h]));
+            // const account_hotkey = getHotkey(_hotkeys, hotkey)
 
 
+            // let neurons = await ctx.store.findBy(Neuron, { coldkeyAddress: coldkey });
+            // const _neurons = new Map<string, Neuron>(neurons.map((n) => [n.hotkey.id, n]));
 
+            // const data = getNeuron(_neurons, hotkey)
 
+            // data.id = makeid(12).toLowerCase();
+            // data.uid = uid;
+            // data.coldkeyAddress = coldkey;
+            // data.hotkey = account_hotkey;
+            // data.stake = stake;
+            // data.rank = rank;
+            // data.incentive = incentive;
+            // data.trust = trust;
+            // data.consensus = consensus;
+            // data.dividends = dividends;
+            // data.emission = emission;
+            // data.ip = ip;
+            // data.port = port;
+            // data.version = version;
+            // data.lastUpdated = last_updated;
+            // data.createdAt = new Date();
+
+            // account_hotkey.neuron = data;
+            // // account.hotkeys = [...account.hotkeys, account_hotkey]
+            // account.hotkeys = [account_hotkey]
+            // account.balance = balances[i].data.free;
 
 
 
-            accounts.push(account);
-            datas.push(data);
+
+
+
+
+            // accounts.push(account);
+            // datas.push(data);
 
 
                 
@@ -208,7 +210,7 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
 
         })
 
-        ctx.log.info(`accounts: ${accounts}`)
+        // ctx.log.info(`accounts: ${accounts}`)
 
         // await ctx.store.save(accounts);
         // await ctx.store.save(datas);
