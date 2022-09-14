@@ -190,8 +190,8 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
 
             account_hotkey.blockNum = blockNum;
             account_hotkey.uid = uid;
-            account_hotkey.account = account;
-            // account.hotkeys = [...account.hotkeys, account_hotkey]
+            // account_hotkey.account = account;
+            account.hotkeys = [...account.hotkeys, account_hotkey]
             // account.hotkeys = [account_hotkey]
             account.balance = balances[i].data.free;
             account.blockNum = blockNum;
@@ -200,6 +200,7 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             // account.hotkeys = account.hotkeys.sort((a, b) => {
 
             ctx.log.info(account);
+            ctx.log.info(account.hotkeys)
             await ctx.store.save(account_hotkey);
             await ctx.store.save(account);
             await ctx.store.save(data);
