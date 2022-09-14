@@ -19,7 +19,10 @@ export class Account {
   hotkeys!: Hotkey[]
 
   @OneToMany_(() => Transfer, e => e.from)
-  transfers!: Transfer[]
+  transfersFrom!: Transfer[]
+
+  @OneToMany_(() => Transfer, e => e.to)
+  transfersTo!: Transfer[]
 
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   balance!: bigint

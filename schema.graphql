@@ -11,16 +11,15 @@ type Account @entity {
 type Hotkey @entity {
   "Hotkey address"
   id: ID!
-  hotkeyAddress: String!
   account: Account!
-  neuron: Neuron @derivedFrom(field: "hotkeyAddress")
+  neuron: Neuron @derivedFrom(field: "hotkey")
 }
 
 type Neuron @entity {
   "Neuron address"
   id: ID!
   coldkeyAddress: String!
-  hotkeyAddress: Hotkey! @unique
+  hotkey: Hotkey! @unique
   uid: Int!
   stake: BigInt!
   rank: BigInt!

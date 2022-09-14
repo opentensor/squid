@@ -14,9 +14,6 @@ export class Hotkey {
   @PrimaryColumn_()
   id!: string
 
-  @Column_("text", {nullable: false})
-  hotkeyAddress!: string
-
   @Index_()
   @ManyToOne_(() => Account, {nullable: true})
   account!: Account

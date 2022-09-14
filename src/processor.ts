@@ -172,7 +172,7 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             data.id = makeid(12).toLowerCase();
             data.uid = uid;
             data.coldkeyAddress = coldkey;
-            data.hotkeyAddress = account_hotkey;
+            data.hotkey = account_hotkey;
             data.stake = stake;
             data.rank = rank;
             data.incentive = incentive;
@@ -225,7 +225,8 @@ function getAccount(m: Map<string, Account>, id: string): Account {
         acc = new Account()
         acc.id = id
         acc.hotkeys = []
-        acc.transfers = []
+        acc.transfersFrom = []
+        acc.transfersTo = []
         acc.balance = 0n
         
         m.set(id, acc)

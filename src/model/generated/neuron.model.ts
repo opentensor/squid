@@ -20,7 +20,7 @@ export class Neuron {
   @Index_({unique: true})
   @OneToOne_(() => Hotkey, {nullable: false})
   @JoinColumn_()
-  hotkeyAddress!: Hotkey
+  hotkey!: Hotkey
 
   @Column_("int4", {nullable: false})
   uid!: number

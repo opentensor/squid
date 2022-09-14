@@ -18,8 +18,9 @@ export class Transfer {
   @ManyToOne_(() => Account, {nullable: true})
   from!: Account
 
-  @Column_("text", {nullable: false})
-  to!: string
+  @Index_()
+  @ManyToOne_(() => Account, {nullable: true})
+  to!: Account
 
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   amount!: bigint
