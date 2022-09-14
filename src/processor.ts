@@ -242,7 +242,6 @@ function getAccount(m: Map<string, Account>, id: string): Account {
         acc.hotkeys = []
         acc.transfersFrom = []
         acc.transfersTo = []
-        acc.balance = 0n
         
         m.set(id, acc)
     }
