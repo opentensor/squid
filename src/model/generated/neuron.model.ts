@@ -1,4 +1,4 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, ManyToOne as ManyToOne_, Index as Index_} from "typeorm"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, OneToOne as OneToOne_, Index as Index_, JoinColumn as JoinColumn_} from "typeorm"
 import * as marshal from "./marshal"
 import {Hotkey} from "./hotkey.model"
 
@@ -17,8 +17,9 @@ export class Neuron {
   @Column_("text", {nullable: false})
   coldkey!: string
 
-  @Index_()
-  @ManyToOne_(() => Hotkey, {nullable: true})
+  @Index_({unique: true})
+  @OneToOne_(() => Hotkey, {nullable: false})
+  @JoinColumn_()
   hotkey!: Hotkey
 
   @Column_("int4", {nullable: false})

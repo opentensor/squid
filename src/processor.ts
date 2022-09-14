@@ -155,11 +155,52 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             // datas.push(data);
 
             let accounts = await ctx.store.findBy(Account, { id: coldkey });
+            let hotkeys = await ctx.store.findBy(Hotkey, { id: hotkey });
+
+
             const _accounts = new Map<string, Account>(accounts.map((a) => [a.id, a]));
+            const _hotkeys = new Map<string, Hotkey>(hotkeys.map((h) => [h.id, h]));
+            
 
             const account = getAccount(_accounts, coldkey)
+            const account_hotkey = getHotkey(_hotkeys, hotkey)
+
+
+            let neurons = await ctx.store.findBy(Neuron, { coldkey: coldkey });
+            const _neurons = new Map<string, Neuron>(neurons.map((n) => [n.hotkey.id, n]));
+
+            const data = getNeuron(_neurons, hotkey)
+
+            data.id = makeid(12).toLowerCase();
+            data.uid = uid;
+            data.coldkey = coldkey;
+            data.hotkey = account_hotkey;
+            data.stake = stake;
+            data.rank = rank;
+            data.incentive = incentive;
+            data.trust = trust;
+            data.consensus = consensus;
+            data.dividends = dividends;
+            data.emission = emission;
+            data.ip = ip;
+            data.port = port;
+            data.version = version;
+            data.lastUpdated = last_updated;
+            data.createdAt = new Date();
+
+            account_hotkey.neuron = data;
+            account.hotkeys = [...account.hotkeys, account_hotkey]
+            account.balance = balances[i].data.free;
+
+
+
+
+
+
 
             ctx.log.info(account)
+
+
                 
 
             // const account = getAccount(ctx.store.accounts, coldkey);
