@@ -173,7 +173,7 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             data.id = makeid(12).toLowerCase();
             data.uid = uid;
             data.coldkeyAddress = coldkey;
-            data.hotkeyAddress = account_hotkey.id;
+            data.hotkey = account_hotkey;
             data.stake = stake;
             data.rank = rank;
             data.incentive = incentive;
@@ -200,10 +200,10 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
 
             // sort the hotkeys by colkdey address
             // account.hotkeys = account.hotkeys.sort((a, b) => {
-                ctx.log.info('account')
-                ctx.log.info(account);
-                ctx.log.info('hotkey')
-                ctx.log.info(account.hotkeys)
+                // ctx.log.info('account')
+                // ctx.log.info(account);
+                // ctx.log.info('hotkey')
+                // ctx.log.info(account.hotkeys)
             // await ctx.store.save(account_hotkey);
             // await ctx.store.save(account);
             // await ctx.store.save(data);

@@ -1,6 +1,5 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, OneToOne as OneToOne_, Index as Index_, JoinColumn as JoinColumn_} from "typeorm"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_} from "typeorm"
 import * as marshal from "./marshal"
-import {Hotkey} from "./hotkey.model"
 
 @Entity_()
 export class Neuron {
@@ -17,10 +16,8 @@ export class Neuron {
   @Column_("text", {nullable: false})
   coldkeyAddress!: string
 
-  @Index_({unique: true})
-  @OneToOne_(() => Hotkey, {nullable: false})
-  @JoinColumn_()
-  hotkey!: Hotkey
+  @Column_("text", {nullable: false})
+  hotkeyAddress!: string
 
   @Column_("int4", {nullable: false})
   uid!: number
