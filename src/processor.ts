@@ -173,7 +173,7 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             data.id = makeid(12).toLowerCase();
             data.uid = uid;
             data.coldkeyAddress = coldkey;
-            data.hotkey = account_hotkey;
+            data.hotkeyAddress = account_hotkey.id;
             data.stake = stake;
             data.rank = rank;
             data.incentive = incentive;
