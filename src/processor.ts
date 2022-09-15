@@ -191,7 +191,9 @@ async function sync(ctx: BlockHandlerContext<Store, {}>) {
             account_hotkey.blockNum = blockNum;
             account_hotkey.uid = uid;
 
+            ctx.log.info('account')
             ctx.log.info(account);
+            ctx.log.info('hotkey')
             ctx.log.info(account.hotkeys)
             // account_hotkey.account = account;
             // let user_hotkeys: Hotkey[] = [account.hotkeys]
