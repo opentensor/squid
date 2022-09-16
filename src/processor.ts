@@ -146,7 +146,8 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
     const balances = await system_ctx.getManyAsV107(coldkeys_balances);
 
 
-    neurons.map(async (neuron, i) => {
+    for (let i = 0; i < neurons.length; i++) {
+        const neuron = neurons[i];
         const {uid, stake, rank, incentive, trust, consensus, dividends, emission, ip, port, version} = neuron;
         const last_updated = neuron.lastUpdate;
         const coldkeyAddress = ss58.codec(42).encode(neuron.coldkey);
@@ -259,7 +260,7 @@ async function sync( ctx: BlockHandlerContext<Store, {}>)  {
     const ns = Array.from(Array(n).keys());
     const uids = sliceIntoChunks({arr: ns, chunkSize: 12});
 
-    const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
+    const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx); 
 
     for (let i = 0; i < uids.length; i++) {
         const neurons = await neurons_ctx.getManyAsV107(uids[i]);
