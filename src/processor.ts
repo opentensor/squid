@@ -292,7 +292,7 @@ async function sync( ctx: BlockHandlerContext<Store, {}>)  {
 
 const processor = new SubstrateProcessor(new TypeormDatabase());
 
-// processor.setBatchSize(100);
+processor.setBatchSize(100);
 processor.setDataSource({
   archive: 'http://morpheus.opentensor.ai:8889/graphql',
   chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
