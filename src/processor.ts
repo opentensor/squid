@@ -228,7 +228,7 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
         _neuron.coldkey = _coldkey
         _neuron.hotkey = _hotkey
 
-        // ctx.log.info(_neuron)
+        ctx.log.info(_neuron)
         
         coldkey_collection.push(_coldkey)
         hotkey_collection.push(_hotkey)
@@ -311,6 +311,7 @@ processor.addPreHook(async (ctx) => {
 
     if (ctx.block.height - last_synced_block > 100) {
         await sync(ctx);
+        last_synced_block = ctx.block.height;
     }
 })
 
