@@ -234,7 +234,7 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
         // neuron_collection.push(_neuron)
         // await ctx.store.save(_coldkey)
         // await ctx.store.save(_hotkey)
-        await ctx.store.save(_neuron)
+        await ctx.store.save([_neuron, _coldkey, _hotkey])
 
 
     })
