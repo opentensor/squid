@@ -82,5 +82,4 @@ type Neuron @entity {
   version: Int!
   lastUpdated: BigInt!
   blockNum: Int!
-  createdAt: DateTime!
 }
