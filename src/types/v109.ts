@@ -1,6 +1,6 @@
 import type {Result} from './support'
 
-export interface NeuronMetadata {
+export interface NeuronMetadataOf {
   version: number
   ip: bigint
   port: number
