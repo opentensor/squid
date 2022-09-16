@@ -61,7 +61,7 @@ type Coldkey @entity {
 type Hotkey @entity {
   "Hotkey address"
   id: ID!
-  neuron: Neuron
+  neuronId: String
   blockNum: Int!
 }
 

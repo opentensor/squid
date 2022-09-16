@@ -1,5 +1,4 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, ManyToOne as ManyToOne_, Index as Index_} from "typeorm"
-import {Neuron} from "./neuron.model"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_} from "typeorm"
 
 @Entity_()
 export class Hotkey {
@@ -13,9 +12,8 @@ export class Hotkey {
   @PrimaryColumn_()
   id!: string
 
-  @Index_()
-  @ManyToOne_(() => Neuron, {nullable: true})
-  neuron!: Neuron | undefined | null
+  @Column_("text", {nullable: true})
+  neuronId!: string | undefined | null
 
   @Column_("int4", {nullable: false})
   blockNum!: number
