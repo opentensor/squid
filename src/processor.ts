@@ -272,7 +272,7 @@ processor.setDataSource({
 });
 
 processor.setTypesBundle('types.json');
-processor.setBlockRange({ from: 2260700 })
+processor.setBlockRange({ from: 2270000 })
 
 processor.addPreHook(async (ctx) => {
 
