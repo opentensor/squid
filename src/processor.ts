@@ -211,14 +211,14 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
         _neuron.coldkey = _coldkey
         _neuron.hotkey = _hotkey
 
-        // ctx.log.info(_neuron)
+        ctx.log.info(_neuron)
         
         // coldkey_collection.push(_coldkey)
         // hotkey_collection.push(_hotkey)
         // neuron_collection.push(_neuron)
-        await ctx.store.save(_coldkey)
-        await ctx.store.save(_hotkey)
-        await ctx.store.save(_neuron)
+        // await ctx.store.save(_coldkey)
+        // await ctx.store.save(_hotkey)
+        // await ctx.store.save(_neuron)
 
 
     })
@@ -249,9 +249,9 @@ async function sync( ctx: BlockHandlerContext<Store, {}>)  {
         // if (neurons) {
         const { coldkey_collection, hotkey_collection, neuron_collection } = await map_neuron(ctx, neurons);
 
-        // await ctx.store.save(coldkey_collection);
-        // await ctx.store.save(hotkey_collection);
-        // await ctx.store.save(neuron_collection);
+        await ctx.store.save(coldkey_collection);
+        await ctx.store.save(hotkey_collection);
+        await ctx.store.save(neuron_collection);
         // }
         
     }
@@ -264,7 +264,7 @@ async function sync( ctx: BlockHandlerContext<Store, {}>)  {
 
 const processor = new SubstrateProcessor(new TypeormDatabase());
 
-processor.setBatchSize(100);
+// processor.setBatchSize(100);
 processor.setDataSource({
   archive: 'http://morpheus.opentensor.ai:8889/graphql',
   chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
