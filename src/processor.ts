@@ -292,11 +292,13 @@ processor.addEventHandler('Balances.Transfer', async (ctx) => {
         const fromAcc = await getOrCreate(ctx.store, Coldkey, fromAddress);
         fromAcc.balance = fromAcc.balance || 0n;
         fromAcc.balance -= _transfer.amount;
+        fromAcc.blockNum = ctx.block.height;
         await ctx.store.save(fromAcc);
 
         const toAcc = await getOrCreate(ctx.store, Coldkey, toAddress);
         toAcc.balance = toAcc.balance || 0n;
         toAcc.balance += _transfer.amount;
+        toAcc.blockNum = ctx.block.height;
         await ctx.store.save(toAcc);
 
         let transfer = new Transfer({
