@@ -217,7 +217,7 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
         _neuron.version = version
         _neuron.lastUpdated = last_updated
 
-        try {
+        // try {
         // coldkey information
         _coldkey.balance = balances[i].data.free;
 
@@ -228,14 +228,14 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
         _neuron.coldkey = _coldkey
         _neuron.hotkey = _hotkey
 
-        ctx.log.info(_neuron)
+        // ctx.log.info(_neuron)
         
         coldkey_collection.push(_coldkey)
         hotkey_collection.push(_hotkey)
         neuron_collection.push(_neuron)
-        } catch (error) {
-            ctx.log.info('error')
-        }
+        // } catch (error) {
+        //     ctx.log.info('error')
+        // }
         
 
 
@@ -277,6 +277,7 @@ async function sync( ctx: BlockHandlerContext<Store, {}>)  {
 
         neuron_collection.map(async neuron => {
             await ctx.store.save(neuron)
+            ctx.log.info(neuron)
         })
         
         // }
