@@ -277,9 +277,8 @@ async function sync( ctx: BlockHandlerContext<Store, {}>)  {
 
         neuron_collection.map(async neuron => {
             await ctx.store.save(neuron)
-            ctx.log.info(neuron)
         })
-
+        
         // }
         
     }
@@ -289,10 +288,6 @@ async function sync( ctx: BlockHandlerContext<Store, {}>)  {
 
 
 /** PROCESSOR */
-
-let START_BLOCK = 1000000;
-
-let last_synced_block = START_BLOCK;
 
 const processor = new SubstrateProcessor(new TypeormDatabase());
 
@@ -305,50 +300,49 @@ processor.setDataSource({
 
 processor.setTypesBundle('types.json');
 // processor.setBlockRange({ from: 2270000 })
-processor.setBlockRange({ from: START_BLOCK })
+processor.setBlockRange({ from: 1000000 })
 
 processor.addPreHook(async (ctx) => {
 
-    if (ctx.block.height - last_synced_block > 100) {
+    if (ctx.block.height % 100 === 0) {
         await sync(ctx);
-        last_synced_block = ctx.block.height;
     }
 })
 
-processor.addEventHandler('Balances.Transfer', async (ctx) => {
-    const event = new BalancesTransferEvent(ctx);
+// processor.addEventHandler('Balances.Transfer', async (ctx) => {
+//     const event = new BalancesTransferEvent(ctx);
 
-    let _transfer = getTransferEvent(event);
+//     let _transfer = getTransferEvent(event);
 
 
-    if (_transfer) {
-        const fromAddress = ss58.codec(42).encode(_transfer.from);
-        const toAddress = ss58.codec(42).encode(_transfer.to);
+//     if (_transfer) {
+//         const fromAddress = ss58.codec(42).encode(_transfer.from);
+//         const toAddress = ss58.codec(42).encode(_transfer.to);
 
-        const fromAcc = await getOrCreate(ctx.store, Coldkey, fromAddress);
-        fromAcc.balance = fromAcc.balance || 0n;
-        fromAcc.balance -= _transfer.amount;
-        fromAcc.blockNum = ctx.block.height;
-        await ctx.store.save(fromAcc);
+//         const fromAcc = await getOrCreate(ctx.store, Coldkey, fromAddress);
+//         fromAcc.balance = fromAcc.balance || 0n;
+//         fromAcc.balance -= _transfer.amount;
+//         fromAcc.blockNum = ctx.block.height;
+//         await ctx.store.save(fromAcc);
 
-        const toAcc = await getOrCreate(ctx.store, Coldkey, toAddress);
-        toAcc.balance = toAcc.balance || 0n;
-        toAcc.balance += _transfer.amount;
-        toAcc.blockNum = ctx.block.height;
-        await ctx.store.save(toAcc);
+//         const toAcc = await getOrCreate(ctx.store, Coldkey, toAddress);
+//         toAcc.balance = toAcc.balance || 0n;
+//         toAcc.balance += _transfer.amount;
+//         toAcc.blockNum = ctx.block.height;
+//         await ctx.store.save(toAcc);
 
-        let transfer = new Transfer({
-            id: ctx.block.hash,
-            from: fromAcc,
-            to: toAcc,
-            amount: _transfer.amount,
-            blockNum: ctx.block.height,
-        });
+//         let transfer = new Transfer({
+//             id: ctx.block.hash,
+//             from: fromAcc,
+//             to: toAcc,
+//             amount: _transfer.amount,
+//             blockNum: ctx.block.height,
+//         });
 
-        await ctx.store.save(transfer);
+//         await ctx.store.save(transfer);
 
     
-    }
-});
+//     }
+// });
 
 processor.run();
