@@ -24,8 +24,7 @@ import {
     SubtensorModuleNStorage,
     SystemAccountStorage
 } from "./types/storage";
-import { NeuronMetadataOf } from "./types/v100";
-import { NeuronMetadata } from "./types/v106"
+import { NeuronMetadataOf } from "./types/v107";
 
 interface SliceProps {
     arr: number[],
@@ -81,8 +80,8 @@ async function getOrCreate<T extends { id: string }>(
   }
 
 function getTransferEvent( event: BalancesTransferEvent ) {
-    if (event.isV100) {
-        const [from, to, amount] = event.asV100;
+    if (event.isV107) {
+        const [from, to, amount] = event.asV107;
         return { from, to, amount }
       } else if (event.isV106) {
         const {from, to, amount} = event.asV106;
@@ -113,7 +112,7 @@ function getNeuron( m: Map<string, Neuron>, id: string): Neuron {
 
 
 
-async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMetadata[]) {
+async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMetadataOf[]) {
 
     const system_ctx = new SystemAccountStorage(ctx);
     
@@ -128,7 +127,7 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
     })
 
 
-    const balances = await system_ctx.getManyAsV100(coldkeys_balances);
+    const balances = await system_ctx.getManyAsV107(coldkeys_balances);
 
 
     neurons.map(async (neuron, i) => {
@@ -241,7 +240,7 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
 async function sync( ctx: BlockHandlerContext<Store, {}>)  {
 
     const n_ctx = new SubtensorModuleNStorage(ctx);
-    const n = await n_ctx.getAsV100();
+    const n = await n_ctx.getAsV107();
 
     const ns = Array.from(Array(n).keys());
     const uids = sliceIntoChunks({arr: ns, chunkSize: 512});
@@ -249,9 +248,11 @@ async function sync( ctx: BlockHandlerContext<Store, {}>)  {
     const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
 
     for (let i = 0; i < uids.length; i++) {
-        const neurons = await neurons_ctx.getManyAsV106(uids[i]);
+        const neurons = await neurons_ctx.getManyAsV107(uids[i]);
 
-        await map_neuron(ctx, neurons);
+        if (neurons) {
+            await map_neuron(ctx, neurons)
+        }
         
     }
 }
