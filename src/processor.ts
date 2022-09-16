@@ -264,7 +264,7 @@ async function sync( ctx: BlockHandlerContext<Store, {}>)  {
 
 const processor = new SubstrateProcessor(new TypeormDatabase());
 
-processor.setBatchSize(500);
+processor.setBatchSize(100);
 processor.setDataSource({
   archive: 'http://morpheus.opentensor.ai:8889/graphql',
   chain: "ws://archivelb.nakamoto.opentensor.ai:9944",
@@ -282,40 +282,40 @@ processor.addPreHook(async (ctx) => {
     }
 })
 
-processor.addEventHandler('Balances.Transfer', async (ctx) => {
-    const event = new BalancesTransferEvent(ctx);
+// processor.addEventHandler('Balances.Transfer', async (ctx) => {
+//     const event = new BalancesTransferEvent(ctx);
 
-    let _transfer = getTransferEvent(event);
+//     let _transfer = getTransferEvent(event);
 
 
-    if (_transfer) {
-        const fromAddress = ss58.codec(42).encode(_transfer.from);
-        const toAddress = ss58.codec(42).encode(_transfer.to);
+//     if (_transfer) {
+//         const fromAddress = ss58.codec(42).encode(_transfer.from);
+//         const toAddress = ss58.codec(42).encode(_transfer.to);
 
-        const fromAcc = await getOrCreate(ctx.store, Coldkey, fromAddress);
-        fromAcc.balance = fromAcc.balance || 0n;
-        fromAcc.balance -= _transfer.amount;
-        fromAcc.blockNum = ctx.block.height;
-        await ctx.store.save(fromAcc);
+//         const fromAcc = await getOrCreate(ctx.store, Coldkey, fromAddress);
+//         fromAcc.balance = fromAcc.balance || 0n;
+//         fromAcc.balance -= _transfer.amount;
+//         fromAcc.blockNum = ctx.block.height;
+//         await ctx.store.save(fromAcc);
 
-        const toAcc = await getOrCreate(ctx.store, Coldkey, toAddress);
-        toAcc.balance = toAcc.balance || 0n;
-        toAcc.balance += _transfer.amount;
-        toAcc.blockNum = ctx.block.height;
-        await ctx.store.save(toAcc);
+//         const toAcc = await getOrCreate(ctx.store, Coldkey, toAddress);
+//         toAcc.balance = toAcc.balance || 0n;
+//         toAcc.balance += _transfer.amount;
+//         toAcc.blockNum = ctx.block.height;
+//         await ctx.store.save(toAcc);
 
-        let transfer = new Transfer({
-            id: ctx.block.hash,
-            from: fromAcc,
-            to: toAcc,
-            amount: _transfer.amount,
-            blockNum: ctx.block.height,
-        });
+//         let transfer = new Transfer({
+//             id: ctx.block.hash,
+//             from: fromAcc,
+//             to: toAcc,
+//             amount: _transfer.amount,
+//             blockNum: ctx.block.height,
+//         });
 
-        await ctx.store.save(transfer);
+//         await ctx.store.save(transfer);
 
     
-    }
-});
+//     }
+// });
 
 processor.run();
