@@ -90,25 +90,41 @@ function getTransferEvent( event: BalancesTransferEvent ) {
 }
 
 function getColdkey( m: Map<string, Coldkey>, id: string): Coldkey {
-    if (!m.has(id)) {
-        m.set(id, new Coldkey({id}))
+    let coldkey = m.get(id)
+    if (coldkey == null) {
+        coldkey = new Coldkey()
+        coldkey.id = id
+
+        m.set(id, coldkey)
     }
-    return m.get(id)!
+    return coldkey
 }
+
 
 function getHotkey( m: Map<string, Hotkey>, id: string): Hotkey {
-    if (!m.has(id)) {
-        m.set(id, new Hotkey({id}))
+    let hotkey = m.get(id)
+    if (hotkey == null) {
+        hotkey = new Hotkey()
+        hotkey.id = id
+        
+        m.set(id, hotkey)
     }
-    return m.get(id)!
+    return hotkey
 }
 
+
 function getNeuron( m: Map<string, Neuron>, id: string): Neuron {
-    if (!m.has(id)) {
-        m.set(id, new Neuron({id}))
+    let neuron = m.get(id)
+    if (neuron == null) {
+        neuron = new Neuron()
+
+        neuron.id = id
+
+        m.set(id, neuron)
     }
-    return m.get(id)!
+    return neuron
 }
+
 
 
 
@@ -213,9 +229,9 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
 
         ctx.log.info(_neuron)
         
-        // coldkey_collection.push(_coldkey)
-        // hotkey_collection.push(_hotkey)
-        // neuron_collection.push(_neuron)
+        coldkey_collection.push(_coldkey)
+        hotkey_collection.push(_hotkey)
+        neuron_collection.push(_neuron)
         // await ctx.store.save(_coldkey)
         // await ctx.store.save(_hotkey)
         // await ctx.store.save(_neuron)
