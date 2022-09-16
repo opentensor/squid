@@ -290,6 +290,10 @@ async function sync( ctx: BlockHandlerContext<Store, {}>)  {
 
 /** PROCESSOR */
 
+let START_BLOCK = 1000000;
+
+let last_synced_block = START_BLOCK;
+
 const processor = new SubstrateProcessor(new TypeormDatabase());
 
 processor.setBatchSize(100);
@@ -301,11 +305,11 @@ processor.setDataSource({
 
 processor.setTypesBundle('types.json');
 // processor.setBlockRange({ from: 2270000 })
-processor.setBlockRange({ from: 1000000 })
+processor.setBlockRange({ from: START_BLOCK })
 
 processor.addPreHook(async (ctx) => {
 
-    if (ctx.block.height % 100 === 0) {
+    if (ctx.block.height - last_synced_block > 100) {
         await sync(ctx);
     }
 })
