@@ -1,6 +1,6 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, ManyToOne as ManyToOne_, Index as Index_} from "typeorm"
 import * as marshal from "./marshal"
-import {Account} from "./account.model"
+import {Coldkey} from "./coldkey.model"
 
 @Entity_()
 export class Transfer {
@@ -15,12 +15,12 @@ export class Transfer {
   id!: string
 
   @Index_()
-  @ManyToOne_(() => Account, {nullable: true})
-  from!: Account
+  @ManyToOne_(() => Coldkey, {nullable: true})
+  from!: Coldkey
 
   @Index_()
-  @ManyToOne_(() => Account, {nullable: true})
-  to!: Account
+  @ManyToOne_(() => Coldkey, {nullable: true})
+  to!: Coldkey
 
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   amount!: bigint
@@ -30,7 +30,4 @@ export class Transfer {
 
   @Column_("text", {nullable: false})
   blockHash!: string
-
-  @Column_("timestamp with time zone", {nullable: false})
-  createdAt!: Date
 }

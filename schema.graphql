@@ -1,27 +1,75 @@
-type Account @entity {
-  "Account address"
+# type Account @entity {
+#   "Account address"
+#   id: ID!
+#   hotkeys: [Hotkey!]! @derivedFrom(field: "account")
+#   transfersFrom: [Transfer!]! @derivedFrom(field: "from")
+#   transfersTo: [Transfer!]! @derivedFrom(field: "to")
+#   balance: BigInt!
+#   blockNum: Int!
+# }
+
+
+# type Hotkey @entity {
+#   "Hotkey address"
+#   id: ID!
+#   account: Account!
+#   uid: Int!
+#   blockNum: Int!
+# }
+
+# type Neuron @entity {
+#   "Neuron address"
+#   id: ID!
+#   coldkeyAddress: String!
+#   hotkeyAddress: String!
+#   uid: Int!
+#   stake: BigInt!
+#   rank: BigInt!
+#   incentive: BigInt!
+#   trust: BigInt!
+#   consensus: BigInt!
+#   dividends: BigInt!
+#   emission: BigInt!
+#   ip: BigInt!
+#   port: Int!
+#   version: Int!
+#   lastUpdated: BigInt!
+#   blockNum: Int!
+#   createdAt: DateTime!
+# }
+
+type Transfer @entity {
+  "Transfer ID"
   id: ID!
-  hotkeys: [Hotkey!]! @derivedFrom(field: "account")
-  transfersFrom: [Transfer!]! @derivedFrom(field: "from")
-  transfersTo: [Transfer!]! @derivedFrom(field: "to")
+  from: Coldkey!
+  to: Coldkey!
+  amount: BigInt!
+  blockNum: Int!
+  blockHash: String!
+}
+
+
+type Coldkey @entity {
+  "Coldkey address"
+  id: ID!
+  transferFrom: [Transfer!]! @derivedFrom(field: "from")
+  transferTo: [Transfer!]! @derivedFrom(field: "to")
   balance: BigInt!
   blockNum: Int!
 }
 
-
 type Hotkey @entity {
   "Hotkey address"
   id: ID!
-  account: Account!
-  uid: Int!
+  neuron: Neuron
   blockNum: Int!
 }
 
 type Neuron @entity {
   "Neuron address"
   id: ID!
-  coldkeyAddress: String!
-  hotkeyAddress: String!
+  coldkey: Coldkey!
+  hotkey: Hotkey!
   uid: Int!
   stake: BigInt!
   rank: BigInt!
@@ -35,16 +83,5 @@ type Neuron @entity {
   version: Int!
   lastUpdated: BigInt!
   blockNum: Int!
-  createdAt: DateTime!
-}
-
-type Transfer @entity {
-  "Transfer ID"
-  id: ID!
-  from: Account!
-  to: Account!
-  amount: BigInt!
-  blockNum: Int!
-  blockHash: String!
   createdAt: DateTime!
 }

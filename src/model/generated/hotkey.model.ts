@@ -1,5 +1,5 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, ManyToOne as ManyToOne_, Index as Index_} from "typeorm"
-import {Account} from "./account.model"
+import {Neuron} from "./neuron.model"
 
 @Entity_()
 export class Hotkey {
@@ -14,11 +14,8 @@ export class Hotkey {
   id!: string
 
   @Index_()
-  @ManyToOne_(() => Account, {nullable: true})
-  account!: Account
-
-  @Column_("int4", {nullable: false})
-  uid!: number
+  @ManyToOne_(() => Neuron, {nullable: true})
+  neuron!: Neuron | undefined | null
 
   @Column_("int4", {nullable: false})
   blockNum!: number
