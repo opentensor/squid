@@ -25,6 +25,7 @@ import {
     SystemAccountStorage
 } from "./types/storage";
 import { NeuronMetadataOf } from "./types/v100";
+import { NeuronMetadata } from "./types/v106"
 
 interface SliceProps {
     arr: number[],
@@ -112,7 +113,7 @@ function getNeuron( m: Map<string, Neuron>, id: string): Neuron {
 
 
 
-async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMetadataOf[]) {
+async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMetadata[]) {
 
     const system_ctx = new SystemAccountStorage(ctx);
     
@@ -248,7 +249,7 @@ async function sync( ctx: BlockHandlerContext<Store, {}>)  {
     const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx);
 
     for (let i = 0; i < uids.length; i++) {
-        const neurons = await neurons_ctx.getManyAsV100(uids[i]);
+        const neurons = await neurons_ctx.getManyAsV106(uids[i]);
 
         await map_neuron(ctx, neurons);
         
