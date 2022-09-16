@@ -270,14 +270,14 @@ processor.setDataSource({
 });
 
 processor.setTypesBundle('types.json');
-processor.setBlockRange({ from: 300000 })
+processor.setBlockRange({ from: 2260738 })
 
-// processor.addPreHook(async (ctx) => {
+processor.addPreHook(async (ctx) => {
 
-//     if (ctx.block.height % 100 === 0) {
-//         await sync(ctx);
-//     }
-// })
+    if (ctx.block.height % 100 === 0) {
+        await sync(ctx);
+    }
+})
 
 processor.addEventHandler('Balances.Transfer', async (ctx) => {
     const event = new BalancesTransferEvent(ctx);
