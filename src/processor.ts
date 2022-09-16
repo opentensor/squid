@@ -277,6 +277,7 @@ async function sync( ctx: BlockHandlerContext<Store, {}>)  {
 
         neuron_collection.map(async neuron => {
             await ctx.store.save(neuron)
+            ctx.log.info(neuron)
         })
 
         // }
