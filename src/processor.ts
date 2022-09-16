@@ -42,6 +42,10 @@ interface TransferEvent {
     fee?: bigint
 }
 
+type EntityConstructor<T> = {
+    new (...args: any[]): T;
+  };
+
 function makeid(coldkeyAddress: string, hotkeyAddress: string, uid: number): string {
     let result = coldkeyAddress + '-' + hotkeyAddress + '-' + uid
 
@@ -63,6 +67,7 @@ async function getOrCreate<T extends { id: string }>(
     id: string
   ): Promise<T> {
     let entity = await store.get<T>(EntityConstructor, {
+        // @ts-ignore
       where: { id },
     });
   
@@ -73,24 +78,16 @@ async function getOrCreate<T extends { id: string }>(
   
     return entity;
   }
-  
-  type EntityConstructor<T> = {
-    new (...args: any[]): T;
-  };
 
-function getTransferEvent(ctx: EventHandlerContext<Event, {}>): TransferEvent {
-    const event = new BalancesTransferEvent(ctx);
+function getTransferEvent( event: BalancesTransferEvent ) {
     if (event.isV100) {
-      const [from, to, amount] = event.isV100;
-      return { from, to, amount };
-    } else if (event.isV1050) {
-      const [from, to, amount] = event.asV1050;
-      return { from, to, amount };
-    } else {
-      const { from, to, amount } = event.asV9130;
-      return { from, to, amount };
-    }
-  }
+        const [from, to, amount] = event.asV100;
+        return { from, to, amount }
+      } else if (event.isV106) {
+        const {from, to, amount} = event.asV106;
+        return { from, to, amount }
+      }
+}
 
 function getColdkey( m: Map<string, Coldkey>, id: string): Coldkey {
     if (!m.has(id)) {
@@ -284,11 +281,36 @@ processor.setBlockRange({ from: 300000 })
 
 processor.addEventHandler('Balances.Transfer', async (ctx) => {
     const event = new BalancesTransferEvent(ctx);
-    ctx.log.info(event)
-    // const transfer = getTransferEvent(ctx);
 
-    // const from = ss58.codec(42).encode(transfer.from);
-    // const to = ss58.codec(42).encode(transfer.to);
+    let _transfer = getTransferEvent(event);
+
+
+    if (_transfer) {
+        const fromAddress = ss58.codec(42).encode(_transfer.from);
+        const toAddress = ss58.codec(42).encode(_transfer.to);
+
+        const fromAcc = await getOrCreate(ctx.store, Coldkey, fromAddress);
+        fromAcc.balance = fromAcc.balance || 0n;
+        fromAcc.balance -= _transfer.amount;
+        await ctx.store.save(fromAcc);
+
+        const toAcc = await getOrCreate(ctx.store, Coldkey, toAddress);
+        toAcc.balance = toAcc.balance || 0n;
+        toAcc.balance += _transfer.amount;
+        await ctx.store.save(toAcc);
+
+        let transfer = new Transfer({
+            id: ctx.block.hash,
+            from: fromAcc,
+            to: toAcc,
+            amount: _transfer.amount,
+            blockNum: ctx.block.height,
+        });
+
+        await ctx.store.save(transfer);
+
+    
+    }
 });
 
 processor.run();

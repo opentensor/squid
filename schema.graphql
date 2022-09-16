@@ -47,7 +47,6 @@ type Transfer @entity {
   to: Coldkey!
   amount: BigInt!
   blockNum: Int!
-  blockHash: String!
 }
 
 
