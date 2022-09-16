@@ -226,6 +226,7 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
     await ctx.store.save(coldkey_collection)
     await ctx.store.save(hotkey_collection)
     await ctx.store.save(neuron_collection)
+    
 
     // await ctx.store.save([...coldkey_collection, ...hotkey_collection, ...neuron_collection])
 
@@ -250,9 +251,9 @@ async function sync( ctx: BlockHandlerContext<Store, {}>)  {
     for (let i = 0; i < uids.length; i++) {
         const neurons = await neurons_ctx.getManyAsV107(uids[i]);
 
-        if (neurons) {
-            await map_neuron(ctx, neurons)
-        }
+        // if (neurons) {
+        await map_neuron(ctx, neurons)
+        // }
         
     }
 }
