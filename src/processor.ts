@@ -47,7 +47,7 @@ type EntityConstructor<T> = {
   };
 
 function makeid(coldkeyAddress: string, hotkeyAddress: string, uid: number): string {
-    let result = coldkeyAddress + '-' + hotkeyAddress + '-' + uid
+    let result = coldkeyAddress + '-' + hotkeyAddress
 
    return result;
 }
@@ -270,7 +270,7 @@ processor.setDataSource({
 });
 
 processor.setTypesBundle('types.json');
-processor.setBlockRange({ from: 2260738 })
+processor.setBlockRange({ from: 2260700 })
 
 processor.addPreHook(async (ctx) => {
 
