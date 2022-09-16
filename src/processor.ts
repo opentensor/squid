@@ -228,7 +228,7 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
         _neuron.coldkey = _coldkey
         _neuron.hotkey = _hotkey
 
-        ctx.log.info(_neuron)
+        // ctx.log.info(_neuron)
         
         coldkey_collection.push(_coldkey)
         hotkey_collection.push(_hotkey)
