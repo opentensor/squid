@@ -61,7 +61,4 @@ export class Neuron {
 
   @Column_("int4", {nullable: false})
   blockNum!: number
-
-  @Column_("timestamp with time zone", {nullable: false})
-  createdAt!: Date
 }

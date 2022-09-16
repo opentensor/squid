@@ -1,6 +1,7 @@
 import * as ss58 from "@subsquid/ss58"
 
 import { 
+    EventHandlerContext,
     BlockHandlerContext,
     SubstrateProcessor  ,
 } from "@subsquid/substrate-processor"
@@ -14,6 +15,9 @@ import {
 
 import {Store, TypeormDatabase} from "@subsquid/typeorm-store"
 
+import {
+    BalancesTransferEvent
+} from "./types/events"
 
 import { 
     SubtensorModuleNeuronsStorage, 
@@ -27,6 +31,16 @@ interface SliceProps {
     chunkSize: number
 }
 
+interface TransferEvent {
+    id: string
+    blockNumber: number
+    timestamp: Date
+    extrinsicHash?: string
+    from: string
+    to: string
+    amount: bigint
+    fee?: bigint
+}
 
 function makeid(coldkeyAddress: string, hotkeyAddress: string, uid: number): string {
     let result = coldkeyAddress + '-' + hotkeyAddress + '-' + uid
@@ -43,6 +57,40 @@ function sliceIntoChunks({arr, chunkSize}: SliceProps) {
     return res;
 }
 
+async function getOrCreate<T extends { id: string }>(
+    store: Store,
+    EntityConstructor: EntityConstructor<T>,
+    id: string
+  ): Promise<T> {
+    let entity = await store.get<T>(EntityConstructor, {
+      where: { id },
+    });
+  
+    if (entity == null) {
+      entity = new EntityConstructor();
+      entity.id = id;
+    }
+  
+    return entity;
+  }
+  
+  type EntityConstructor<T> = {
+    new (...args: any[]): T;
+  };
+
+function getTransferEvent(ctx: EventHandlerContext<Event, {}>): TransferEvent {
+    const event = new BalancesTransferEvent(ctx);
+    if (event.isV100) {
+      const [from, to, amount] = event.isV100;
+      return { from, to, amount };
+    } else if (event.isV1050) {
+      const [from, to, amount] = event.asV1050;
+      return { from, to, amount };
+    } else {
+      const { from, to, amount } = event.asV9130;
+      return { from, to, amount };
+    }
+  }
 
 function getColdkey( m: Map<string, Coldkey>, id: string): Coldkey {
     if (!m.has(id)) {
@@ -166,7 +214,7 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
         _neuron.coldkey = _coldkey
         _neuron.hotkey = _hotkey
 
-        ctx.log.info(_neuron)
+        // ctx.log.info(_neuron)
         
         coldkey_collection.push(_coldkey)
         hotkey_collection.push(_hotkey)
@@ -227,11 +275,20 @@ processor.setDataSource({
 processor.setTypesBundle('types.json');
 processor.setBlockRange({ from: 300000 })
 
-processor.addPreHook(async (ctx) => {
+// processor.addPreHook(async (ctx) => {
 
-    if (ctx.block.height % 100 === 0) {
-        await sync(ctx);
-    }
-})
+//     if (ctx.block.height % 100 === 0) {
+//         await sync(ctx);
+//     }
+// })
+
+processor.addEventHandler('Balances.Transfer', async (ctx) => {
+    const event = new BalancesTransferEvent(ctx);
+    ctx.log.info(event)
+    // const transfer = getTransferEvent(ctx);
+
+    // const from = ss58.codec(42).encode(transfer.from);
+    // const to = ss58.codec(42).encode(transfer.to);
+});
 
 processor.run();

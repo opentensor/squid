@@ -12,9 +12,6 @@ export class Hotkey {
   @PrimaryColumn_()
   id!: string
 
-  @Column_("text", {nullable: true})
-  neuronId!: string | undefined | null
-
   @Column_("int4", {nullable: false})
   blockNum!: number
 }
