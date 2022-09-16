@@ -95,17 +95,26 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
         const neuron_id = makeid(coldkeyAddress, hotkeyAddress, uid);
 
 
-        let sck = await ctx.store.findBy(Coldkey, {id: coldkeyAddress })
-        let shk = await ctx.store.findBy(Hotkey, {id: hotkeyAddress })
-        let sn = await ctx.store.findBy(Neuron, {id: neuron_id })
+        let sck = await ctx.store
+        .findBy(Coldkey, {id: coldkeyAddress })
+        .then((coldkey) => {
+            return new Map<string, Coldkey>(coldkey.map((c) => [c.id, c]))
+        })
+        
+        let shk = await ctx.store
+        .findBy(Hotkey, {id: hotkeyAddress })
+        .then((hotkey) => {
+            return new Map<string, Hotkey>(hotkey.map((h) => [h.id, h]))
+        })
+        let sn = await ctx.store
+        .findBy(Neuron, {id: neuron_id })
+        .then((neuron) => {
+            return new Map<string, Neuron>(neuron.map((n) => [n.id, n]))
+        })
 
-        let _coldkeys = new Map<string, Coldkey>(sck.map((c) => [c.id, c]))
-        let _hotkeys = new Map<string, Hotkey>(shk.map((h) => [h.id, h]))
-        let _neurons = new Map<string, Neuron>(sn.map((n) => [n.id, n]))
-
-        let _coldkey = getColdkey(_coldkeys, coldkeyAddress)
-        let _hotkey = getHotkey(_hotkeys, hotkeyAddress)
-        let _neuron = getNeuron(_neurons, neuron_id)
+        let _coldkey = getColdkey(sck, coldkeyAddress)
+        let _hotkey = getHotkey(shk, hotkeyAddress)
+        let _neuron = getNeuron(sn, neuron_id)
 
         // Block nums
         _coldkey.blockNum = blockNum
