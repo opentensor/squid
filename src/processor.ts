@@ -219,9 +219,11 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
 
         // coldkey information
         _coldkey.balance = balances[i].data.free;
+        await ctx.store.save(_coldkey)
 
         // hotkey information
         // _hotkey.neuronId = neuron_id
+        await ctx.store.save(_hotkey)
 
         // neuron link information
         _neuron.coldkey = _coldkey
@@ -235,7 +237,7 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
         // await ctx.store.save(_coldkey)
         // await ctx.store.save(_hotkey)
         await ctx.store.save(_neuron)
-        await ctx.store.save(_coldkey)
+        
         await ctx.store.save(_hotkey)
 
 
