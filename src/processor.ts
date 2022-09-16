@@ -220,11 +220,9 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
         try {
         // coldkey information
         _coldkey.balance = balances[i].data.free;
-        await ctx.store.save(_coldkey)
 
         // hotkey information
         // _hotkey.neuronId = neuron_id
-        await ctx.store.save(_hotkey)
 
         // neuron link information
         _neuron.coldkey = _coldkey
@@ -232,12 +230,9 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
 
         ctx.log.info(_neuron)
         
-        // coldkey_collection.push(_coldkey)
-        // hotkey_collection.push(_hotkey)
-        // neuron_collection.push(_neuron)
-        // await ctx.store.save(_coldkey)
-        // await ctx.store.save(_hotkey)
-        await ctx.store.save(_neuron)
+        coldkey_collection.push(_coldkey)
+        hotkey_collection.push(_hotkey)
+        neuron_collection.push(_neuron)
         } catch (error) {
             ctx.log.info('error')
         }
@@ -272,9 +267,18 @@ async function sync( ctx: BlockHandlerContext<Store, {}>)  {
         // if (neurons) {
         const { coldkey_collection, hotkey_collection, neuron_collection } = await map_neuron(ctx, neurons);
 
-        await ctx.store.save(coldkey_collection);
-        await ctx.store.save(hotkey_collection);
-        await ctx.store.save(neuron_collection);
+        coldkey_collection.map(async coldkey => {
+            await ctx.store.save(coldkey)
+        })
+
+        hotkey_collection.map(async hotkey => {
+            await ctx.store.save(hotkey)
+        })
+
+        neuron_collection.map(async neuron => {
+            await ctx.store.save(neuron)
+        })
+        
         // }
         
     }
