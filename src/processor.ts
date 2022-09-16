@@ -259,7 +259,7 @@ async function sync( ctx: BlockHandlerContext<Store, {}>)  {
     const n = await n_ctx.getAsV107();
 
     const ns = Array.from(Array(n).keys());
-    const uids = sliceIntoChunks({arr: ns, chunkSize: 12});
+    const uids = sliceIntoChunks({arr: ns, chunkSize: 512});
 
     const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx); 
 
