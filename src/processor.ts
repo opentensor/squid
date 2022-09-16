@@ -191,6 +191,7 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
             })
         } catch (error) {
             sn = new Map<string, Neuron>()
+            ctx.log.info('Neuron not found')
         }
 
 
@@ -240,7 +241,7 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
         
 
 
-    })
+    }
 
     // await ctx.store.save([...coldkey_collection, ...hotkey_collection, ...neuron_collection])
 
