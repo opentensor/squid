@@ -146,6 +146,12 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
 
     })
 
+    // await ctx.store.save(coldkey_collection)
+    // await ctx.store.save(hotkey_collection)
+    // await ctx.store.save(neuron_collection)
+
+    await ctx.store.save([...coldkey_collection, ...hotkey_collection, ...neuron_collection])
+
     return {
         'coldkey_collection': coldkey_collection, 
         'hotkey_collection': hotkey_collection, 
@@ -169,9 +175,6 @@ async function sync( ctx: BlockHandlerContext<Store, {}>)  {
 
         const {coldkey_collection, hotkey_collection, neuron_collection} = await map_neuron(ctx, neurons);
         
-        await ctx.store.save(coldkey_collection)
-        await ctx.store.save(hotkey_collection)
-        await ctx.store.save(neuron_collection)
     }
 }
 
