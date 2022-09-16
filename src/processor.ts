@@ -94,23 +94,43 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
 
         const neuron_id = makeid(coldkeyAddress, hotkeyAddress, uid);
 
+        let sck
+        let shk
+        let sn
 
-        let sck = await ctx.store
-        .findBy(Coldkey, {id: coldkeyAddress })
-        .then((coldkey) => {
-            return new Map<string, Coldkey>(coldkey.map((c) => [c.id, c]))
-        })
-        
-        let shk = await ctx.store
-        .findBy(Hotkey, {id: hotkeyAddress })
-        .then((hotkey) => {
-            return new Map<string, Hotkey>(hotkey.map((h) => [h.id, h]))
-        })
-        let sn = await ctx.store
-        .findBy(Neuron, {id: neuron_id })
-        .then((neuron) => {
-            return new Map<string, Neuron>(neuron.map((n) => [n.id, n]))
-        })
+
+        // TODO: make this block of code more efficient
+        try {
+            sck = await ctx.store
+            .findBy(Coldkey, {id: coldkeyAddress })
+            .then((coldkey) => {
+                return new Map<string, Coldkey>(coldkey.map((c) => [c.id, c]))
+            })
+        } catch (error) {
+            sck = new Map<string, Coldkey>()
+        }
+
+        try {
+            shk = await ctx.store
+            .findBy(Hotkey, {id: hotkeyAddress })
+            .then((hotkey) => {
+                return new Map<string, Hotkey>(hotkey.map((h) => [h.id, h]))
+            })
+        } catch (error) {
+            shk = new Map<string, Hotkey>()
+        }
+
+
+        try {
+            sn = await ctx.store
+            .findBy(Neuron, {id: neuron_id })
+            .then((neuron) => {
+                return new Map<string, Neuron>(neuron.map((n) => [n.id, n]))
+            })
+        } catch (error) {
+            sn = new Map<string, Neuron>()
+        }
+
 
         let _coldkey = getColdkey(sck, coldkeyAddress)
         let _hotkey = getHotkey(shk, hotkeyAddress)
