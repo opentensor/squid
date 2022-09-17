@@ -24,7 +24,7 @@ import {
     SubtensorModuleNStorage,
     SystemAccountStorage
 } from "./types/storage";
-import { NeuronMetadataOf } from "./types/v107";
+import { NeuronMetadataOf } from "./types/v109";
 
 interface SliceProps {
     arr: number[],
@@ -80,11 +80,11 @@ async function getOrCreate<T extends { id: string }>(
   }
 
 function getTransferEvent( event: BalancesTransferEvent ) {
-    if (event.isV107) {
-        const [from, to, amount] = event.asV107;
+    if (event.isV109) {
+        const [from, to, amount] = event.asV109;
         return { from, to, amount }
-      } else if (event.isV106) {
-        const {from, to, amount} = event.asV106;
+      } else if (event.isV109) {
+        const [from, to, amount] = event.asV109;
         return { from, to, amount }
       }
 }
@@ -143,7 +143,7 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
     })
 
 
-    const balances = await system_ctx.getManyAsV107(coldkeys_balances);
+    const balances = await system_ctx.getManyAsV109(coldkeys_balances);
 
 
     for (let i = 0; i < neurons.length; i++) {
@@ -256,7 +256,7 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
 async function sync( ctx: BlockHandlerContext<Store, {}>)  {
 
     const n_ctx = new SubtensorModuleNStorage(ctx);
-    const n = await n_ctx.getAsV107();
+    const n = await n_ctx.getAsV109();
 
     const ns = Array.from(Array(n).keys());
     const uids = sliceIntoChunks({arr: ns, chunkSize: 512});
@@ -264,7 +264,7 @@ async function sync( ctx: BlockHandlerContext<Store, {}>)  {
     const neurons_ctx = new SubtensorModuleNeuronsStorage(ctx); 
 
     for (let i = 0; i < uids.length; i++) {
-        const neurons = await neurons_ctx.getManyAsV107(uids[i]);
+        const neurons = await neurons_ctx.getManyAsV109(uids[i]);
 
         // if (neurons) {
         const { coldkey_collection, hotkey_collection, neuron_collection } = await map_neuron(ctx, neurons);
