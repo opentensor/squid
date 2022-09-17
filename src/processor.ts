@@ -24,7 +24,7 @@ import {
     SubtensorModuleNStorage,
     SystemAccountStorage
 } from "./types/storage";
-import { NeuronMetadata } from "./types/V107";
+import { NeuronMetadata } from "./types/v107";
 
 interface SliceProps {
     arr: number[],
