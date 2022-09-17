@@ -27,7 +27,4 @@ export class Transfer {
 
   @Column_("int4", {nullable: false})
   blockNum!: number
-
-  @Column_("text", {nullable: false})
-  blockHash!: string
 }
