@@ -25,7 +25,7 @@ services:
       #  "-e", "wss://kusama-rpc.dwellir.com", "--endpoint-capacity", "10", # use 10 concurrent ingesters for this endpoint
        # add multiple endpoints to speed up the archiving.
        # adding the same endpoint will proprtionally increase the bandwidth and the indexing speed.
-        "--start-block", "1663949", # comment out to specify a non-zero start block
+        "--start-block", "1692286", # comment out to specify a non-zero start block
         # "--start-block", "1692380",
        "--out", "postgres://postgres:postgres@db:5432/squid-archive"
     ]

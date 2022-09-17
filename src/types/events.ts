@@ -15,32 +15,17 @@ export class BalancesTransferEvent {
   }
 
   /**
-   *  Transfer succeeded. \[from, to, value\]
-   */
-  get isV109(): boolean {
-    return this._chain.getEventHash('Balances.Transfer') === '01bd9c526b0f715f947efaae82673221462be99f3a3f192f5f47bd9956dfec38'
-  }
-
-  /**
-   *  Transfer succeeded. \[from, to, value\]
-   */
-  get asV109(): [Uint8Array, Uint8Array, bigint] {
-    assert(this.isV109)
-    return this._chain.decodeEvent(this.event)
-  }
-
-  /**
    * Transfer succeeded.
    */
-  get isV100(): boolean {
+  get isV106(): boolean {
     return this._chain.getEventHash('Balances.Transfer') === '0ffdf35c495114c2d42a8bf6c241483fd5334ca0198662e14480ad040f1e3a66'
   }
 
   /**
    * Transfer succeeded.
    */
-  get asV100(): {from: Uint8Array, to: Uint8Array, amount: bigint} {
-    assert(this.isV100)
+  get asV106(): {from: Uint8Array, to: Uint8Array, amount: bigint} {
+    assert(this.isV106)
     return this._chain.decodeEvent(this.event)
   }
 }
@@ -59,17 +44,17 @@ export class SubtensorModuleAxonServedEvent {
   }
 
   /**
-   *  --- Event created when the axon server information is added to the network.
+   * --- Event created when the axon server information is added to the network.
    */
-  get isV109(): boolean {
+  get isV106(): boolean {
     return this._chain.getEventHash('SubtensorModule.AxonServed') === '0a0f30b1ade5af5fade6413c605719d59be71340cf4884f65ee9858eb1c38f6c'
   }
 
   /**
-   *  --- Event created when the axon server information is added to the network.
+   * --- Event created when the axon server information is added to the network.
    */
-  get asV109(): number {
-    assert(this.isV109)
+  get asV106(): number {
+    assert(this.isV106)
     return this._chain.decodeEvent(this.event)
   }
 }
@@ -88,19 +73,19 @@ export class SubtensorModuleNeuronRegisteredEvent {
   }
 
   /**
-   *  --- Event created when a new neuron account has been registered to 
-   *  the chain.
+   * --- Event created when a new neuron account has been registered to 
+   * the chain.
    */
-  get isV109(): boolean {
+  get isV106(): boolean {
     return this._chain.getEventHash('SubtensorModule.NeuronRegistered') === '0a0f30b1ade5af5fade6413c605719d59be71340cf4884f65ee9858eb1c38f6c'
   }
 
   /**
-   *  --- Event created when a new neuron account has been registered to 
-   *  the chain.
+   * --- Event created when a new neuron account has been registered to 
+   * the chain.
    */
-  get asV109(): number {
-    assert(this.isV109)
+  get asV106(): number {
+    assert(this.isV106)
     return this._chain.decodeEvent(this.event)
   }
 }
@@ -119,19 +104,19 @@ export class SubtensorModuleStakeAddedEvent {
   }
 
   /**
-   *  --- Event created during when stake has been transfered from 
-   *  the coldkey onto the hotkey staking account.
+   * --- Event created during when stake has been transfered from 
+   * the coldkey onto the hotkey staking account.
    */
-  get isV109(): boolean {
+  get isV106(): boolean {
     return this._chain.getEventHash('SubtensorModule.StakeAdded') === 'fb1b6c83a547837ce9f07d7b623e71a4fec6cea1d51d01009d24c5a20e53d816'
   }
 
   /**
-   *  --- Event created during when stake has been transfered from 
-   *  the coldkey onto the hotkey staking account.
+   * --- Event created during when stake has been transfered from 
+   * the coldkey onto the hotkey staking account.
    */
-  get asV109(): [Uint8Array, bigint] {
-    assert(this.isV109)
+  get asV106(): [Uint8Array, bigint] {
+    assert(this.isV106)
     return this._chain.decodeEvent(this.event)
   }
 }
@@ -150,19 +135,19 @@ export class SubtensorModuleStakeRemovedEvent {
   }
 
   /**
-   *  --- Event created when stake has been removed from 
-   *  the staking account into the coldkey account.
+   * --- Event created when stake has been removed from 
+   * the staking account into the coldkey account.
    */
-  get isV109(): boolean {
+  get isV106(): boolean {
     return this._chain.getEventHash('SubtensorModule.StakeRemoved') === 'fb1b6c83a547837ce9f07d7b623e71a4fec6cea1d51d01009d24c5a20e53d816'
   }
 
   /**
-   *  --- Event created when stake has been removed from 
-   *  the staking account into the coldkey account.
+   * --- Event created when stake has been removed from 
+   * the staking account into the coldkey account.
    */
-  get asV109(): [Uint8Array, bigint] {
-    assert(this.isV109)
+  get asV106(): [Uint8Array, bigint] {
+    assert(this.isV106)
     return this._chain.decodeEvent(this.event)
   }
 }
@@ -181,19 +166,19 @@ export class SubtensorModuleWeightsSetEvent {
   }
 
   /**
-   *  ---- Event created when a caller successfully set's their weights
-   *  on the chain.
+   * ---- Event created when a caller successfully set's their weights
+   * on the chain.
    */
-  get isV109(): boolean {
+  get isV106(): boolean {
     return this._chain.getEventHash('SubtensorModule.WeightsSet') === '21ea0c8f2488eafafdea1de92b54cd17d8b1caff525e37616abf0ff93f11531d'
   }
 
   /**
-   *  ---- Event created when a caller successfully set's their weights
-   *  on the chain.
+   * ---- Event created when a caller successfully set's their weights
+   * on the chain.
    */
-  get asV109(): Uint8Array {
-    assert(this.isV109)
+  get asV106(): Uint8Array {
+    assert(this.isV106)
     return this._chain.decodeEvent(this.event)
   }
 }
