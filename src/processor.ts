@@ -143,7 +143,7 @@ async function map_neuron(ctx: BlockHandlerContext<Store, {}>, neurons: NeuronMe
     })
 
 
-    const balances = await system_ctx.getManyAsV109(coldkeys_balances);
+    const balances = await system_ctx.getManyAsV100(coldkeys_balances);
 
 
     for (let i = 0; i < neurons.length; i++) {
